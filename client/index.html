@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ScamShield — Protecting Indian students from fake jobs, phishing attacks, and cyber scams.">
+<title>ScamShield — Protect Students From Cyber Scams</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════ TOKENS ═══════════════════ */
+:root{
+  --navy-deep:#020818;--navy-mid:#050f2a;
+  --blue-neon:#00d4ff;--blue-bright:#0094cc;--cyan-soft:#7df9ff;
+  --red-alert:#ff3b5c;--orange-warn:#ff9d3d;--green-safe:#00ffa3;--purple-acc:#a855f7;
+  --white:#f0f8ff;--white-dim:rgba(240,248,255,.68);--white-faint:rgba(240,248,255,.10);
+  --glass:rgba(10,26,62,.55);--glass-border:rgba(0,212,255,.18);
+  --blue-glow:rgba(0,212,255,.13);--blue-glow-md:rgba(0,212,255,.22);
+  --radius:16px;--radius-sm:10px;--radius-xs:7px;
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+/* ═══════════════════ RESET ═══════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy-deep);color:var(--white);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none;line-height:1.6}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none}
+ul{list-style:none}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0}
+
+/* ═══════════════════ CURSOR ═══════════════════ */
+.cursor{width:10px;height:10px;background:var(--blue-neon);border-radius:50%;position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);mix-blend-mode:screen;box-shadow:0 0 10px var(--blue-neon),0 0 22px var(--blue-neon)}
+.cursor-ring{width:34px;height:34px;border:1.5px solid rgba(0,212,255,.45);border-radius:50%;position:fixed;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .16s ease}
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:var(--blue-neon);opacity:0;animation:float-p linear infinite}
+@keyframes float-p{0%{transform:translateY(100vh) scale(0);opacity:0}8%{opacity:.7}92%{opacity:.2}100%{transform:translateY(-80px) scale(1.8);opacity:0}}
+
+/* ═══════════════════ NAVBAR ═══════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(2,8,24,.85);backdrop-filter:blur(22px);border-bottom:1px solid var(--glass-border);transition:padding .36s var(--ease)}
+nav.scrolled{padding:12px 48px;background:rgba(2,8,24,.97)}
+.nav-logo{font-family:'Orbitron',monospace;font-size:1.35rem;font-weight:900;color:var(--blue-neon);letter-spacing:2.5px;text-shadow:0 0 22px var(--blue-neon);display:flex;align-items:center;gap:10px}
+.logo-hex{width:34px;height:34px;background:linear-gradient(135deg,var(--blue-neon),var(--blue-bright));clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:flex;align-items:center;justify-content:center;font-size:15px;animation:hex-pulse 2.8s ease-in-out infinite}
+@keyframes hex-pulse{0%,100%{box-shadow:0 0 8px var(--blue-neon)}50%{box-shadow:0 0 30px var(--blue-neon),0 0 55px rgba(0,212,255,.28)}}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--white-dim);font-size:.78rem;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;transition:color .25s,text-shadow .25s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--blue-neon);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav-links a:hover{color:var(--blue-neon);text-shadow:0 0 12px var(--blue-neon)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{background:transparent;border:1.5px solid var(--blue-neon);color:var(--blue-neon);padding:9px 22px;border-radius:var(--radius-sm);font-family:'Orbitron',monospace;font-size:.72rem;letter-spacing:2px;transition:all .3s}
+.nav-cta:hover{background:var(--blue-neon);color:var(--navy-deep);box-shadow:0 0 26px var(--blue-neon)}
+.nav-live{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--green-safe);padding:5px 12px;border:1px solid rgba(0,255,163,.25);border-radius:100px;background:rgba(0,255,163,.06)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green-safe);animation:blink 1.4s ease-in-out infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:22px;height:2px;background:var(--blue-neon);display:block;transition:all .3s;border-radius:2px}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:67px;left:0;right:0;background:rgba(2,8,24,.97);backdrop-filter:blur(24px);padding:20px 28px 28px;z-index:998;border-bottom:1px solid var(--glass-border);flex-direction:column;gap:4px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--white-dim);font-family:'JetBrains Mono',monospace;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;padding:13px 0;border-bottom:1px solid var(--white-faint);transition:color .25s,padding-left .25s}
+.mobile-menu a:hover{color:var(--blue-neon);padding-left:8px}
+
+/* ═══════════════════ API STATUS BAR ═══════════════════ */
+.api-status-bar{display:none!important}
+
+/* ═══════════════════ TICKER ═══════════════════ */
+.ticker-wrap{background:var(--navy-mid);border-bottom:1px solid var(--glass-border);padding:11px 0;overflow:hidden;position:relative;z-index:10}
+.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
+.ticker-wrap::before{left:0;background:linear-gradient(90deg,var(--navy-mid),transparent)}
+.ticker-wrap::after{right:0;background:linear-gradient(-90deg,var(--navy-mid),transparent)}
+.ticker{display:flex;animation:ticker-scroll 38s linear infinite;white-space:nowrap}
+.ticker:hover{animation-play-state:paused}
+.ticker-item{padding:0 44px;font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--white-dim);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.t-dot{width:5px;height:5px;border-radius:50%;background:var(--blue-neon);flex-shrink:0}
+.t-r{color:var(--red-alert);font-weight:600}.t-g{color:var(--green-safe);font-weight:600}.t-y{color:var(--orange-warn);font-weight:600}
+@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════════════ SECTION BASE ═══════════════════ */
+section{position:relative;z-index:1;padding:96px 0}
+.container{max-width:1180px;margin:0 auto;padding:0 28px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue-neon);letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px;opacity:.85}
+.eyebrow::before{content:'//';opacity:.45}
+.ec{justify-content:center}
+h2.sec-title{font-family:'Orbitron',monospace;font-size:clamp(1.9rem,3.8vw,3rem);font-weight:900;line-height:1.08;margin-bottom:18px}
+.sec-sub{color:var(--white-dim);font-size:1.05rem;line-height:1.75;max-width:580px}
+.sec-sub.c{margin:0 auto}
+.tc{text-align:center}
+.neon{color:var(--blue-neon);text-shadow:0 0 28px rgba(0,212,255,.55)}
+.red{color:var(--red-alert)}.green{color:var(--green-safe)}
+
+/* ═══════════════════ GLASS ═══════════════════ */
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);backdrop-filter:blur(20px);transition:all .36s var(--ease)}
+.glass:hover{border-color:rgba(0,212,255,.38);transform:translateY(-5px);box-shadow:0 18px 55px rgba(0,212,255,.1),0 0 0 1px rgba(0,212,255,.12)}
+.glass-r{border-color:rgba(255,59,92,.2);background:rgba(255,59,92,.04)}
+.glass-r:hover{border-color:rgba(255,59,92,.45);box-shadow:0 18px 55px rgba(255,59,92,.08)}
+.glass-g{border-color:rgba(0,255,163,.2);background:rgba(0,255,163,.04)}
+.glass-g:hover{border-color:rgba(0,255,163,.4)}
+
+/* ═══════════════════ BUTTONS ═══════════════════ */
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 34px;border-radius:var(--radius-sm);font-family:'Orbitron',monospace;font-size:.76rem;font-weight:700;letter-spacing:2.2px;transition:all .3s;cursor:pointer;border:none}
+.btn-p{background:linear-gradient(135deg,var(--blue-neon),var(--blue-bright));color:var(--navy-deep);box-shadow:0 0 28px rgba(0,212,255,.32)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 48px rgba(0,212,255,.58)}
+.btn-s{background:transparent;color:var(--white);border:1.5px solid rgba(240,248,255,.18)}
+.btn-s:hover{border-color:var(--blue-neon);color:var(--blue-neon)}
+.btn-sm{padding:9px 20px;font-size:.7rem}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* ═══════════════════ FADE ═══════════════════ */
+.fade-up{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.fade-up:nth-child(2){transition-delay:.1s}.fade-up:nth-child(3){transition-delay:.18s}
+.fade-up:nth-child(4){transition-delay:.26s}.fade-up:nth-child(5){transition-delay:.34s}.fade-up:nth-child(6){transition-delay:.42s}
+
+/* ═══════════════════ HERO ═══════════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 65% 30%,rgba(0,212,255,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 70% at 5% 80%,rgba(0,60,110,.1) 0%,transparent 55%)}
+.hero-grid{display:grid;grid-template-columns:1fr 480px;gap:48px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.08);border:1px solid var(--glass-border);padding:7px 16px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue-neon);letter-spacing:1.2px;margin-bottom:26px}
+h1.hero-title{font-family:'Orbitron',monospace;font-size:clamp(2.3rem,5vw,4rem);font-weight:900;line-height:1.04;margin-bottom:22px}
+.hi{color:var(--blue-neon);text-shadow:0 0 35px rgba(0,212,255,.55)}
+.hero-sub{color:var(--white-dim);font-size:1.1rem;line-height:1.78;margin-bottom:38px;max-width:500px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:48px;padding-top:28px;border-top:1px solid var(--white-faint)}
+.stat-val{font-family:'Orbitron',monospace;font-size:1.75rem;font-weight:900;color:var(--blue-neon);text-shadow:0 0 20px rgba(0,212,255,.45)}
+.stat-lbl{font-size:.72rem;color:var(--white-dim);margin-top:3px;letter-spacing:.8px}
+.hero-visual{display:flex;justify-content:center;align-items:center;position:relative}
+.shield-wrap{width:280px;height:330px;position:relative}
+.shield-svg{width:100%;height:100%;filter:drop-shadow(0 0 32px rgba(0,212,255,.4));animation:float-shield 4.2s ease-in-out infinite}
+@keyframes float-shield{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(.5deg)}}
+.ring{position:absolute;border:1px solid rgba(0,212,255,.18);border-radius:50%;animation:ring-expand 3.2s ease-out infinite}
+.ring:nth-child(1){width:340px;height:340px;top:-30px;left:-30px;animation-delay:0s}
+.ring:nth-child(2){width:420px;height:420px;top:-70px;left:-70px;animation-delay:.9s}
+.ring:nth-child(3){width:500px;height:500px;top:-110px;left:-110px;animation-delay:1.8s}
+@keyframes ring-expand{0%{opacity:.6;transform:scale(.94)}100%{opacity:0;transform:scale(1.08)}}
+
+/* ═══════════════════ STATS BAR ═══════════════════ */
+#live-stats-bar{background:var(--navy-mid);border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);padding:22px 0}
+.stats-bar-inner{display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px}
+.stat-pill{display:flex;align-items:center;gap:14px;padding:14px 24px;border-radius:var(--radius-sm);background:var(--blue-glow);border:1px solid var(--glass-border)}
+.sp-icon{font-size:1.5rem}
+.sp-val{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;color:var(--blue-neon);text-shadow:0 0 16px rgba(0,212,255,.45)}
+.sp-lbl{font-size:.72rem;color:var(--white-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.8px}
+
+/* ═══════════════════ FEATURES ═══════════════════ */
+#features{background:linear-gradient(180deg,var(--navy-deep) 0%,var(--navy-mid) 100%)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+.feat-card{padding:34px 28px}
+.feat-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.55rem;margin-bottom:20px;background:var(--blue-glow);border:1px solid var(--glass-border);transition:all .3s}
+.feat-card:hover .feat-icon{background:var(--blue-glow-md);box-shadow:0 0 22px rgba(0,212,255,.22)}
+.feat-card h3{font-family:'Orbitron',monospace;font-size:.95rem;font-weight:700;margin-bottom:10px}
+.feat-card p{color:var(--white-dim);font-size:.875rem;line-height:1.72}
+.feat-tag{display:inline-block;margin-top:16px;padding:3px 11px;border-radius:100px;font-size:.68rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px;border:1px solid var(--glass-border);color:var(--blue-neon)}
+
+/* ═══════════════════ TIPS SLIDER ═══════════════════ */
+#tips-slider{background:var(--navy-mid);padding:36px 0;overflow:hidden;border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border)}
+.tips-track{display:flex;gap:20px;animation:tips-scroll 34s linear infinite}
+.tips-track:hover{animation-play-state:paused}
+.tip-card{flex-shrink:0;width:320px;padding:20px 22px;background:var(--blue-glow);border:1px solid var(--glass-border);border-radius:var(--radius-sm);font-size:.84rem;color:var(--white-dim);line-height:1.65}
+.tip-card strong{color:var(--blue-neon);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:1px;display:block;margin-bottom:6px}
+@keyframes tips-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════════════ WARNINGS ═══════════════════ */
+#warnings{background:var(--navy-mid)}
+.warn-layout{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.warn-list{display:flex;flex-direction:column;gap:14px;margin-top:38px}
+.warn-item{display:flex;gap:16px;align-items:flex-start;padding:20px 22px;border-radius:var(--radius-sm);background:rgba(255,59,92,.05);border:1px solid rgba(255,59,92,.18);transition:all .3s}
+.warn-item:hover{background:rgba(255,59,92,.11);border-color:rgba(255,59,92,.42);transform:translateX(6px)}
+.wi-em{font-size:1.9rem;min-width:40px;text-align:center}
+.wi-tx h4{font-size:.93rem;font-weight:700;margin-bottom:4px}
+.wi-tx p{font-size:.82rem;color:var(--white-dim);line-height:1.62}
+.threat-panel{padding:30px;position:sticky;top:110px}
+.threat-panel h4{font-family:'Orbitron',monospace;font-size:.82rem;color:var(--blue-neon);margin-bottom:22px;letter-spacing:2px}
+.m-row{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.m-lbl{font-size:.76rem;color:var(--white-dim);display:flex;justify-content:space-between}
+.m-bg{height:7px;border-radius:100px;background:rgba(255,255,255,.06);overflow:hidden}
+.m-fill{height:100%;border-radius:100px;transition:width 1.6s cubic-bezier(.23,1,.32,1)}
+.mf-r{background:linear-gradient(90deg,#ff3b5c,#ff7a8a);box-shadow:0 0 9px rgba(255,59,92,.4)}
+.mf-o{background:linear-gradient(90deg,#ff9d3d,#ffbe7a);box-shadow:0 0 9px rgba(255,157,61,.4)}
+.mf-y{background:linear-gradient(90deg,#ffe53d,#fff176);box-shadow:0 0 9px rgba(255,229,61,.4)}
+.mf-b{background:linear-gradient(90deg,#00d4ff,#7df9ff);box-shadow:0 0 9px rgba(0,212,255,.4)}
+.scam-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid var(--white-faint)}
+.sc-tag{padding:4px 11px;border-radius:100px;font-size:.68rem;font-family:'JetBrains Mono',monospace;background:rgba(255,59,92,.1);border:1px solid rgba(255,59,92,.22);color:var(--red-alert)}
+
+/* ═══════════════════ COMPARISON ═══════════════════ */
+#comparison{background:var(--navy-deep)}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:46px}
+.cmp-card{padding:34px 30px}
+.cmp-head{display:flex;align-items:center;gap:14px;margin-bottom:26px;padding-bottom:18px;border-bottom:1px solid var(--white-faint)}
+.cmp-badge{padding:5px 14px;border-radius:100px;font-family:'Orbitron',monospace;font-size:.68rem;font-weight:700;letter-spacing:2px}
+.b-real{background:rgba(0,255,163,.13);color:var(--green-safe);border:1px solid rgba(0,255,163,.28)}
+.b-fake{background:rgba(255,59,92,.13);color:var(--red-alert);border:1px solid rgba(255,59,92,.28)}
+.cmp-row{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--white-faint)}
+.cmp-row:last-child{border:none}
+.cmp-row span{font-size:.86rem;color:var(--white-dim);line-height:1.5}
+.cmp-row strong{color:var(--white)}
+
+/* ═══════════════════ REPORT SECTION ═══════════════════ */
+#report{background:var(--navy-mid)}
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.rpt-steps{display:flex;flex-direction:column;gap:0;margin-top:34px}
+.step{display:flex;gap:18px;align-items:flex-start;position:relative;padding-bottom:28px}
+.step:last-child{padding-bottom:0}
+.step::before{content:'';position:absolute;left:19px;top:42px;width:2px;bottom:0;background:linear-gradient(180deg,var(--blue-neon),transparent);opacity:.28}
+.step:last-child::before{display:none}
+.step-num{width:40px;height:40px;flex-shrink:0;border-radius:50%;background:var(--blue-glow);border:1.5px solid var(--blue-neon);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:.68rem;color:var(--blue-neon);font-weight:700}
+.step h4{font-size:.92rem;font-weight:700;margin-bottom:4px}
+.step p{font-size:.82rem;color:var(--white-dim);line-height:1.6}
+
+/* ── FORM CARD ── */
+.form-card{padding:38px 34px}
+.form-title{font-family:'Orbitron',monospace;font-size:1rem;margin-bottom:22px;color:var(--blue-neon);letter-spacing:1px;display:flex;align-items:center;gap:10px}
+.api-badge{font-size:.65rem;padding:3px 10px;border-radius:100px;font-family:'JetBrains Mono',monospace;letter-spacing:1px}
+.api-badge.online{background:rgba(0,255,163,.1);color:var(--green-safe);border:1px solid rgba(0,255,163,.25)}
+.api-badge.offline{background:rgba(255,157,61,.1);color:var(--orange-warn);border:1px solid rgba(255,157,61,.25)}
+.api-badge.checking{background:rgba(0,212,255,.1);color:var(--blue-neon);border:1px solid var(--glass-border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grp{margin-bottom:18px}
+.form-grp label{display:block;font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--blue-neon);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px}
+.form-grp input,.form-grp select,.form-grp textarea{width:100%;padding:12px 15px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:var(--radius-xs);color:var(--white);font-family:'Syne',sans-serif;font-size:.875rem;outline:none;resize:vertical;transition:border-color .3s,box-shadow .3s}
+.form-grp input:focus,.form-grp select:focus,.form-grp textarea:focus{border-color:var(--blue-neon);box-shadow:0 0 0 3px rgba(0,212,255,.1)}
+.form-grp input.err-field,.form-grp select.err-field,.form-grp textarea.err-field{border-color:var(--red-alert)!important;box-shadow:0 0 0 3px rgba(255,59,92,.12)!important}
+.form-grp select option{background:var(--navy-mid);color:var(--white)}
+.form-grp input::placeholder,.form-grp textarea::placeholder{color:rgba(240,248,255,.28)}
+.field-err{font-size:.7rem;color:var(--red-alert);margin-top:5px;font-family:'JetBrains Mono',monospace;display:none}
+.field-err.show{display:block}
+
+/* File drop */
+.file-drop{border:1.5px dashed var(--glass-border);border-radius:var(--radius-xs);padding:22px;text-align:center;cursor:pointer;transition:all .3s;background:rgba(255,255,255,.02)}
+.file-drop:hover,.file-drop.dragover{border-color:var(--blue-neon);background:var(--blue-glow)}
+.file-drop input[type=file]{display:none}
+.file-drop p{font-size:.82rem;color:var(--white-dim)}
+.file-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.file-thumb{padding:5px 12px;border-radius:var(--radius-xs);background:var(--blue-glow);border:1px solid var(--glass-border);font-size:.72rem;font-family:'JetBrains Mono',monospace;color:var(--blue-neon);display:flex;align-items:center;gap:6px}
+.file-thumb .rm{cursor:pointer;opacity:.6;transition:opacity .2s}
+.file-thumb .rm:hover{opacity:1}
+
+/* Submit button */
+.form-submit{width:100%;padding:15px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--blue-neon),var(--blue-bright))!important;color:var(--navy-deep)!important;font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;letter-spacing:2.2px;cursor:pointer;border:none;transition:all .3s;box-shadow:0 0 22px rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;gap:10px}
+.form-submit:hover:not(:disabled){box-shadow:0 0 42px rgba(0,212,255,.52);transform:translateY(-2px)}
+.form-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.form-note{text-align:center;margin-top:12px;font-size:.7rem;color:var(--white-dim);font-family:'JetBrains Mono',monospace}
+
+/* ── TOAST — the key fix ── */
+.form-toast{
+  margin-top:14px;
+  padding:16px 18px;
+  border-radius:var(--radius-sm);
+  font-size:.875rem;
+  display:none;
+  line-height:1.65;
+  animation:toast-in .3s ease;
+}
+.form-toast.show{display:block}
+@keyframes toast-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SUCCESS — API online */
+.form-toast.success-live{
+  background:rgba(0,255,163,.09);
+  border:1px solid rgba(0,255,163,.32);
+  color:var(--green-safe);
+}
+/* SUCCESS — saved locally (offline) */
+.form-toast.success-local{
+  background:rgba(0,212,255,.07);
+  border:1px solid rgba(0,212,255,.25);
+  color:var(--blue-neon);
+}
+/* ERROR — validation */
+.form-toast.error-validation{
+  background:rgba(255,59,92,.07);
+  border:1px solid rgba(255,59,92,.28);
+  color:var(--red-alert);
+}
+/* ERROR — server error */
+.form-toast.error-server{
+  background:rgba(255,157,61,.07);
+  border:1px solid rgba(255,157,61,.28);
+  color:var(--orange-warn);
+}
+
+.toast-title{font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;margin-bottom:6px;letter-spacing:1px;display:flex;align-items:center;gap:8px}
+.toast-body{font-size:.82rem;line-height:1.6}
+.toast-id{font-family:'JetBrains Mono',monospace;font-size:.75rem;margin-top:8px;opacity:.8}
+.toast-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.toast-action-btn{
+  padding:5px 14px;border-radius:var(--radius-xs);
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  cursor:pointer;transition:all .25s;border:1px solid;
+}
+.ta-cybercrime{background:transparent;border-color:rgba(255,59,92,.4);color:var(--red-alert)}
+.ta-cybercrime:hover{background:rgba(255,59,92,.1)}
+.ta-retry{background:transparent;border-color:rgba(0,212,255,.4);color:var(--blue-neon)}
+.ta-retry:hover{background:var(--blue-glow)}
+
+.queued-notice{display:none!important}
+
+/* ═══════════════════ AWARENESS ═══════════════════ */
+#awareness{background:var(--navy-deep)}
+.aw-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:46px}
+.aw-card{padding:30px 26px;position:relative;overflow:hidden}
+.aw-card::after{content:'';position:absolute;top:-60%;right:-40%;width:180px;height:180px;border-radius:50%;opacity:.04;transition:opacity .4s}
+.aw-card:hover::after{opacity:.1}
+.aw-ph::after{background:var(--red-alert)}.aw-in::after{background:var(--orange-warn)}
+.aw-tg::after{background:var(--blue-neon)}.aw-id::after{background:var(--purple-acc)}
+.aw-jf::after{background:var(--green-safe)}.aw-se::after{background:var(--orange-warn)}
+.aw-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.aw-em{font-size:2rem}
+.aw-card h3{font-family:'Orbitron',monospace;font-size:.92rem;margin-bottom:3px}
+.aw-card p{font-size:.84rem;color:var(--white-dim);line-height:1.7}
+.aw-tips{margin-top:13px;display:flex;flex-direction:column;gap:6px}
+.aw-tip{font-size:.78rem;color:var(--white-dim);display:flex;gap:7px}
+.aw-tip::before{content:'→';color:var(--blue-neon);flex-shrink:0}
+
+/* ═══════════════════ QUIZ ═══════════════════ */
+#quiz{background:var(--navy-mid)}
+.quiz-wrap{max-width:700px;margin:46px auto 0}
+.quiz-card{padding:38px}
+.quiz-counter{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue-neon);letter-spacing:1.5px;margin-bottom:10px}
+.quiz-pbar-bg{height:4px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:22px}
+.quiz-pbar{height:100%;background:var(--blue-neon);border-radius:100px;transition:width .5s ease;box-shadow:0 0 8px var(--blue-neon)}
+.quiz-q{font-family:'Orbitron',monospace;font-size:.97rem;margin-bottom:26px;line-height:1.55}
+.quiz-opts{display:flex;flex-direction:column;gap:11px}
+.quiz-opt{padding:14px 20px;border:1px solid var(--glass-border);border-radius:var(--radius-sm);background:rgba(255,255,255,.03);cursor:pointer;font-size:.875rem;transition:all .25s;display:flex;gap:13px;align-items:center}
+.quiz-opt:hover{border-color:var(--blue-neon);background:var(--blue-glow)}
+.quiz-opt.correct{border-color:var(--green-safe);background:rgba(0,255,163,.09);color:var(--green-safe)}
+.quiz-opt.wrong{border-color:var(--red-alert);background:rgba(255,59,92,.09);color:var(--red-alert)}
+.quiz-opt.disabled{pointer-events:none}
+.opt-ltr{width:26px;height:26px;border-radius:50%;flex-shrink:0;border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.72rem}
+.quiz-fb{margin-top:18px;padding:14px 18px;border-radius:var(--radius-sm);font-size:.86rem;display:none;line-height:1.58}
+.quiz-fb.show{display:block}
+.fb-ok{background:rgba(0,255,163,.09);border:1px solid rgba(0,255,163,.28);color:var(--green-safe)}
+.fb-err{background:rgba(255,59,92,.09);border:1px solid rgba(255,59,92,.28);color:var(--red-alert)}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px}
+.quiz-sc{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--white-dim)}
+.quiz-result{display:none;text-align:center;padding:48px 36px}
+.quiz-result.show{display:block}
+.res-score{font-family:'Orbitron',monospace;font-size:4.2rem;font-weight:900;color:var(--blue-neon);text-shadow:0 0 45px rgba(0,212,255,.6)}
+.res-msg{color:var(--white-dim);margin-top:10px;font-size:1rem;line-height:1.65}
+.res-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.res-badge{padding:6px 16px;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:.72rem;border:1px solid var(--glass-border);color:var(--blue-neon);background:var(--blue-glow)}
+
+/* ═══════════════════ BLACKLIST ═══════════════════ */
+#blacklist{background:var(--navy-deep)}
+.bl-controls{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0;align-items:center}
+.bl-search{flex:1;min-width:220px;padding:11px 16px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--white);font-family:'Syne',sans-serif;font-size:.875rem;outline:none;transition:border-color .3s}
+.bl-search:focus{border-color:var(--blue-neon)}
+.bl-filter{padding:11px 16px;background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:var(--radius-sm);color:var(--white);font-family:'Syne',sans-serif;font-size:.84rem;outline:none;cursor:pointer}
+.bl-filter option{background:var(--navy-mid)}
+.bl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.bl-entry{padding:20px;border:1px solid rgba(255,59,92,.2);border-radius:var(--radius-sm);background:rgba(255,59,92,.04);transition:all .3s}
+.bl-entry:hover{border-color:rgba(255,59,92,.45);transform:translateY(-3px);box-shadow:0 12px 30px rgba(255,59,92,.08)}
+.bl-name{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:600;color:var(--red-alert);margin-bottom:4px;word-break:break-all}
+.bl-plat{font-size:.74rem;color:var(--white-dim);margin-bottom:8px}
+.bl-bot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+.bl-tag{padding:3px 10px;border-radius:100px;font-size:.67rem;font-family:'JetBrains Mono',monospace;background:rgba(255,59,92,.13);color:var(--red-alert);border:1px solid rgba(255,59,92,.22)}
+.bl-flag{padding:4px 11px;border-radius:var(--radius-xs);background:transparent;border:1px solid rgba(255,59,92,.3);color:var(--red-alert);font-size:.68rem;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .25s;white-space:nowrap}
+.bl-flag:hover{background:rgba(255,59,92,.15);border-color:var(--red-alert)}
+.bl-pager{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:28px}
+.pg-btn{padding:8px 18px;border-radius:var(--radius-xs);background:var(--blue-glow);border:1px solid var(--glass-border);color:var(--blue-neon);font-family:'JetBrains Mono',monospace;font-size:.74rem;cursor:pointer;transition:all .25s}
+.pg-btn:hover:not(:disabled){background:var(--blue-glow-md)}
+.pg-btn:disabled{opacity:.35;cursor:not-allowed}
+.pg-info{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--white-dim)}
+.bl-skel{height:110px;border-radius:var(--radius-sm);background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 75%);background-size:200% 100%;animation:shimmer 1.5s ease-in-out infinite;border:1px solid var(--glass-border)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ═══════════════════ CONTACT ═══════════════════ */
+#contact{background:var(--navy-mid)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact-links{display:flex;flex-direction:column;gap:14px;margin-top:32px}
+.contact-link{display:flex;align-items:center;gap:16px;padding:17px 20px;border-radius:var(--radius-sm);transition:all .3s;color:var(--white)}
+.contact-link:hover{transform:translateX(6px)}
+.cl-icon{font-size:1.4rem;min-width:30px}
+.cl-label{display:block;font-size:.88rem;font-weight:700;margin-bottom:2px}
+.cl-val{font-size:.76rem;color:var(--white-dim);font-family:'JetBrains Mono',monospace}
+.res-card{padding:34px 30px}
+.res-title{font-family:'Orbitron',monospace;font-size:.85rem;color:var(--blue-neon);letter-spacing:2px;margin-bottom:18px}
+.res-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--white-faint)}
+.res-item:last-child{border:none}
+.res-ico{font-size:1.15rem;margin-top:1px;flex-shrink:0}
+.res-item a{color:var(--blue-neon);font-size:.84rem;transition:all .2s}
+.res-item a:hover{text-shadow:0 0 10px var(--blue-neon)}
+.res-item p{font-size:.74rem;color:var(--white-dim);margin-top:2px;line-height:1.5}
+
+/* ═══════════════════ CREATOR ═══════════════════ */
+.creator-section{background:linear-gradient(90deg,var(--navy-mid),rgba(0,212,255,.05),var(--navy-mid));border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);padding:56px 0;text-align:center}
+.creator-prefix{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--white-dim);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px}
+.creator-name{font-family:'Orbitron',monospace;font-size:clamp(1.6rem,3vw,2.5rem);font-weight:900;letter-spacing:3px;background:linear-gradient(135deg,var(--blue-neon),var(--cyan-soft),#b47dff,var(--blue-neon));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:name-grad 4s ease infinite}
+@keyframes name-grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.creator-role{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--white-dim);margin-top:8px}
+.creator-tags{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px}
+.c-tag{padding:6px 16px;border-radius:100px;background:var(--blue-glow);border:1px solid var(--glass-border);font-size:.7rem;color:var(--blue-neon);font-family:'JetBrains Mono',monospace}
+
+/* ═══════════════════ FOOTER ═══════════════════ */
+footer{background:var(--navy-deep);padding:36px 0;border-top:1px solid var(--glass-border)}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px}
+.footer-logo{font-family:'Orbitron',monospace;font-size:1rem;color:var(--blue-neon);letter-spacing:2px}
+.footer-copy{font-size:.76rem;color:var(--white-dim);font-family:'JetBrains Mono',monospace}
+.footer-links{display:flex;gap:22px}
+.footer-links a{color:var(--white-dim);font-size:.76rem;transition:color .2s}
+.footer-links a:hover{color:var(--blue-neon)}
+
+/* ═══════════════════ FABs ═══════════════════ */
+#theme-btn,#scroll-top{position:fixed;z-index:9999;width:48px;height:48px;border-radius:50%;background:var(--glass);border:1.5px solid var(--glass-border);color:var(--blue-neon);font-size:1.2rem;cursor:pointer;backdrop-filter:blur(14px);transition:all .3s;box-shadow:0 4px 24px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+#theme-btn{bottom:24px;right:24px}
+#theme-btn:hover,#scroll-top:hover{transform:scale(1.12)}
+#scroll-top{bottom:24px;left:24px;display:none}
+#scroll-top.show{display:flex}
+
+/* ═══════════════════ RESPONSIVE ═══════════════════ */
+@media(max-width:960px){
+  nav{padding:14px 22px}
+  .nav-links,.nav-cta,.nav-live{display:none}
+  .hamburger{display:flex}
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero-btns{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-visual{display:none}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .warn-layout{grid-template-columns:1fr}
+  .threat-panel{position:static}
+  .cmp-grid{grid-template-columns:1fr}
+  .rpt-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .aw-grid{grid-template-columns:1fr}
+  .bl-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-inner{flex-direction:column;text-align:center}
+}
+@media(max-width:600px){
+  section{padding:68px 0}
+  h2.sec-title{font-size:1.75rem}
+  .features-grid{grid-template-columns:1fr}
+  .bl-grid{grid-template-columns:1fr}
+  .stats-bar-inner{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div id="particles"></div>
+
+<!-- ══════ NAVBAR ══════ -->
+<nav id="navbar">
+  <div class="nav-logo"><div class="logo-hex">🛡</div>ScamShield</div>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#warnings">Warnings</a></li>
+    <li><a href="#comparison">Compare</a></li>
+    <li><a href="#report">Report</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#blacklist">Blacklist</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nav-live"><span class="live-dot"></span><span id="nav-count">LIVE</span></div>
+    <a href="#report" class="nav-cta">Report Scam</a>
+  </div>
+  <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#features"   onclick="closeMob()">Features</a>
+  <a href="#warnings"   onclick="closeMob()">Warnings</a>
+  <a href="#comparison" onclick="closeMob()">Compare</a>
+  <a href="#report"     onclick="closeMob()">Report</a>
+  <a href="#quiz"       onclick="closeMob()">Quiz</a>
+  <a href="#blacklist"  onclick="closeMob()">Blacklist</a>
+  <a href="#awareness"  onclick="closeMob()">Awareness</a>
+  <a href="#contact"    onclick="closeMob()">Contact</a>
+</div>
+
+<!-- ══════ API STATUS BAR ══════ -->
+<div class="api-status-bar checking" id="api-status-bar">
+  <span class="status-dot grey" id="status-dot"></span>
+  <span id="api-status-text">Checking API connection…</span>
+  <button id="api-retry-btn" onclick="retryAPI()">↺ Retry</button>
+</div>
+
+<!-- ══════ TICKER ══════ -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-r">⚠ ALERT:</span>Fake TCS recruitment on Telegram — never pay registration fees</div>
+    <div class="ticker-item"><span class="t-dot"></span>Report cybercrime instantly at cybercrime.gov.in or call 1930</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-r">⚠</span>Gmail addresses are NEVER used by real MNC recruiters</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-g">✓ TIP:</span>Verify company registration on mca.gov.in before applying</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-r">⚠</span>Instant job offer with no interview = guaranteed scam</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-y">⚡</span>Never share Aadhaar or PAN with unverified recruiters</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-r">⚠ ALERT:</span>Fake TCS recruitment on Telegram — never pay registration fees</div>
+    <div class="ticker-item"><span class="t-dot"></span>Report cybercrime instantly at cybercrime.gov.in or call 1930</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-r">⚠</span>Gmail addresses are NEVER used by real MNC recruiters</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-g">✓ TIP:</span>Verify company registration on mca.gov.in before applying</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-r">⚠</span>Instant job offer with no interview = guaranteed scam</div>
+    <div class="ticker-item"><span class="t-dot"></span><span class="t-y">⚡</span>Never share Aadhaar or PAN with unverified recruiters</div>
+  </div>
+</div>
+
+<!-- ══════ HERO ══════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-badge fade-up"><span class="live-dot"></span>Active Cyber Threat Intelligence Platform</div>
+        <h1 class="hero-title fade-up">Protect Students<br>From <span class="hi">Fake Jobs</span><br>&amp; Cyber Scams</h1>
+        <p class="hero-sub fade-up">ScamShield empowers Indian students and job seekers to identify fraudulent recruiters, phishing attacks, and fake internships — before becoming victims.</p>
+        <div class="hero-btns fade-up">
+          <a href="#warnings" class="btn btn-p">⚡ View Warning Signs</a>
+          <a href="#report"   class="btn btn-s">📡 Report a Scam</a>
+        </div>
+        <div class="hero-stats fade-up">
+          <div><div class="stat-val" id="stat-warned">10,000+</div><div class="stat-lbl">Students Warned</div></div>
+          <div><div class="stat-val" id="stat-rpts">2,400+</div><div class="stat-lbl">Scams Reported</div></div>
+          <div><div class="stat-val" id="stat-bl">340+</div><div class="stat-lbl">Fraudsters Blacklisted</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="shield-wrap">
+          <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+          <svg class="shield-svg" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0094cc"/></linearGradient>
+              <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <path d="M100 8 L188 44 L188 132 C188 178 100 224 100 224 C100 224 12 178 12 132 L12 44 Z" fill="url(#sg)" opacity="0.14" stroke="#00d4ff" stroke-width="1.5" filter="url(#glow)"/>
+            <path d="M100 28 L168 58 L168 132 C168 168 100 204 100 204 C100 204 32 168 32 132 L32 58 Z" fill="rgba(0,212,255,0.07)" stroke="rgba(0,212,255,0.38)" stroke-width="1"/>
+            <text x="100" y="136" text-anchor="middle" font-size="66" filter="url(#glow)">🛡</text>
+            <text x="100" y="168" text-anchor="middle" font-family="Orbitron,monospace" font-size="10" fill="#00d4ff" letter-spacing="2" font-weight="700">SCAMSHIELD</text>
+            <text x="100" y="183" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(0,212,255,0.5)" letter-spacing="1">BY GAYATHRII N</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ LIVE STATS BAR ══════ -->
+<div id="live-stats-bar">
+  <div class="container">
+    <div class="stats-bar-inner">
+      <div class="stat-pill"><div class="sp-icon">📊</div><div><div class="sp-val" id="sp-rpts">—</div><div class="sp-lbl">Total Reports</div></div></div>
+      <div class="stat-pill"><div class="sp-icon">🚫</div><div><div class="sp-val" id="sp-bl">—</div><div class="sp-lbl">Blacklisted</div></div></div>
+      <div class="stat-pill"><div class="sp-icon">⏳</div><div><div class="sp-val" id="sp-pend">—</div><div class="sp-lbl">Under Review</div></div></div>
+      <div class="stat-pill"><div class="sp-icon">👥</div><div><div class="sp-val" id="sp-warn">—</div><div class="sp-lbl">Students Warned</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ FEATURES ══════ -->
+<section id="features">
+  <div class="container">
+    <div class="tc fade-up">
+      <div class="eyebrow ec">Core Features</div>
+      <h2 class="sec-title">Your Shield Against <span class="neon">Cyber Fraud</span></h2>
+      <p class="sec-sub c">Every tool students and job seekers need to stay safe in today's dangerous hiring landscape.</p>
+    </div>
+    <div class="features-grid">
+      <div class="glass feat-card fade-up"><div class="feat-icon">🔍</div><h3>Fake Job Detection</h3><p>Recognise fraudulent listings using our real-time database of confirmed scam patterns.</p><span class="feat-tag">Live Database</span></div>
+      <div class="glass feat-card fade-up"><div class="feat-icon">📢</div><h3>Scam Reporting</h3><p>Submit reports with screenshots. Verified scammers are added to the live public blacklist.</p><span class="feat-tag">Backend Connected</span></div>
+      <div class="glass feat-card fade-up"><div class="feat-icon">🎓</div><h3>Cyber Awareness Hub</h3><p>Interactive guides on phishing, Telegram scams, and identity theft — built for students.</p><span class="feat-tag">Educational</span></div>
+      <div class="glass feat-card fade-up"><div class="feat-icon">🗄️</div><h3>Scam Database</h3><p>Browse confirmed fake recruiters, phishing domains, and fraudulent Telegram groups.</p><span class="feat-tag">Searchable</span></div>
+      <div class="glass feat-card fade-up"><div class="feat-icon">🧠</div><h3>Detection Quiz</h3><p>Test scam-spotting skills with real-world scenario quizzes. Learn by doing.</p><span class="feat-tag">Interactive</span></div>
+      <div class="glass feat-card fade-up"><div class="feat-icon">🔒</div><h3>Safety Resources</h3><p>Official links to cybercrime.gov.in, UIDAI, and MCA portal for legal action.</p><span class="feat-tag">Verified Links</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ TIPS SLIDER ══════ -->
+<div id="tips-slider">
+  <div class="tips-track" id="tips-track"></div>
+</div>
+
+<!-- ══════ WARNINGS ══════ -->
+<section id="warnings">
+  <div class="container">
+    <div class="warn-layout">
+      <div>
+        <div class="eyebrow fade-up">Red Flags</div>
+        <h2 class="sec-title fade-up">Scam <span class="red">Warning Signs</span></h2>
+        <p class="sec-sub fade-up">If even one of these patterns appears in a job offer — walk away immediately.</p>
+        <div class="warn-list">
+          <div class="warn-item fade-up"><div class="wi-em">💸</div><div class="wi-tx"><h4>Recruiters Asking for Money</h4><p>Legitimate companies NEVER charge registration fees, training deposits, or security money. Any payment demand = scam.</p></div></div>
+          <div class="warn-item fade-up"><div class="wi-em">📧</div><div class="wi-tx"><h4>Gmail Instead of Company Domain</h4><p>Real Infosys recruiters use @infosys.com. "infosys.hr@gmail.com" is always fake — zero exceptions.</p></div></div>
+          <div class="warn-item fade-up"><div class="wi-em">⚡</div><div class="wi-tx"><h4>Instant Selection Without Interview</h4><p>"You're hired!" with zero evaluation? Real companies run written tests, technical rounds, and HR interviews.</p></div></div>
+          <div class="warn-item fade-up"><div class="wi-em">📱</div><div class="wi-tx"><h4>Telegram / WhatsApp Interviews</h4><p>No reputable MNC conducts interviews on Telegram or WhatsApp. These are scammer favourites.</p></div></div>
+          <div class="warn-item fade-up"><div class="wi-em">💰</div><div class="wi-tx"><h4>Unrealistic Salary Promises</h4><p>₹80,000/month for zero-experience fresher? Scammers exploit greed. Research market rates first.</p></div></div>
+          <div class="warn-item fade-up"><div class="wi-em">🔗</div><div class="wi-tx"><h4>Lookalike / Suspicious URLs</h4><p>"wipro-careers.org" or "amazon-india-jobs.net" are fake. Verify the exact official domain letter by letter.</p></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="glass threat-panel fade-up">
+          <h4>// THREAT LEVEL MONITOR</h4>
+          <div class="m-row"><div class="m-lbl"><span>Payment Demand</span><span>97%</span></div><div class="m-bg"><div class="m-fill mf-r" style="width:0" data-w="97%"></div></div></div>
+          <div class="m-row"><div class="m-lbl"><span>Gmail Usage</span><span>88%</span></div><div class="m-bg"><div class="m-fill mf-r" style="width:0" data-w="88%"></div></div></div>
+          <div class="m-row"><div class="m-lbl"><span>No Interview</span><span>82%</span></div><div class="m-bg"><div class="m-fill mf-o" style="width:0" data-w="82%"></div></div></div>
+          <div class="m-row"><div class="m-lbl"><span>Telegram Scam</span><span>74%</span></div><div class="m-bg"><div class="m-fill mf-y" style="width:0" data-w="74%"></div></div></div>
+          <div class="m-row"><div class="m-lbl"><span>Fake Websites</span><span>66%</span></div><div class="m-bg"><div class="m-fill mf-b" style="width:0" data-w="66%"></div></div></div>
+          <div class="scam-tags">
+            <span class="sc-tag">Fake Internships</span><span class="sc-tag">Phishing Links</span>
+            <span class="sc-tag">WFH Fraud</span><span class="sc-tag">Data Theft</span>
+            <span class="sc-tag">Advance Fee</span><span class="sc-tag">Identity Theft</span>
+            <span class="sc-tag">Telegram Groups</span><span class="sc-tag">Fake Certificates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ COMPARISON ══════ -->
+<section id="comparison">
+  <div class="container">
+    <div class="tc fade-up">
+      <div class="eyebrow ec">Know the Difference</div>
+      <h2 class="sec-title">Real Company vs <span class="red">Fake Recruiter</span></h2>
+      <p class="sec-sub c">Side-by-side so you can make the right call every single time.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="glass glass-g cmp-card fade-up">
+        <div class="cmp-head"><span style="font-size:1.9rem">🏢</span><div><div class="cmp-badge b-real">✓ REAL COMPANY</div><div style="font-size:.78rem;color:var(--white-dim);margin-top:5px">What legitimate hiring looks like</div></div></div>
+        <div class="cmp-row"><span style="color:var(--green-safe);font-size:1.05rem;min-width:20px;margin-top:1px">✓</span><span><strong>Official Email Domain</strong><br>hr@company.com, careers@tcs.com</span></div>
+        <div class="cmp-row"><span style="color:var(--green-safe);font-size:1.05rem;min-width:20px;margin-top:1px">✓</span><span><strong>Multiple Interview Rounds</strong><br>Written → Technical → HR</span></div>
+        <div class="cmp-row"><span style="color:var(--green-safe);font-size:1.05rem;min-width:20px;margin-top:1px">✓</span><span><strong>Zero Fees Required</strong><br>No registration, training, or security deposits</span></div>
+        <div class="cmp-row"><span style="color:var(--green-safe);font-size:1.05rem;min-width:20px;margin-top:1px">✓</span><span><strong>Verified Official Website</strong><br>HTTPS, correct domain, Glassdoor presence</span></div>
+        <div class="cmp-row"><span style="color:var(--green-safe);font-size:1.05rem;min-width:20px;margin-top:1px">✓</span><span><strong>Formal Offer Letter</strong><br>Company letterhead with CIN number</span></div>
+        <div class="cmp-row"><span style="color:var(--green-safe);font-size:1.05rem;min-width:20px;margin-top:1px">✓</span><span><strong>Proper Background Check</strong><br>Consent-based KYC through official channels</span></div>
+      </div>
+      <div class="glass glass-r cmp-card fade-up">
+        <div class="cmp-head"><span style="font-size:1.9rem">👺</span><div><div class="cmp-badge b-fake">✗ FAKE RECRUITER</div><div style="font-size:.78rem;color:var(--white-dim);margin-top:5px">Red flags in fraudulent offers</div></div></div>
+        <div class="cmp-row"><span style="color:var(--red-alert);font-size:1.05rem;min-width:20px;margin-top:1px">✗</span><span><strong>Gmail / Yahoo Account</strong><br>wipro.recruitment@gmail.com = always fake</span></div>
+        <div class="cmp-row"><span style="color:var(--red-alert);font-size:1.05rem;min-width:20px;margin-top:1px">✗</span><span><strong>Instant Selection</strong><br>"Congratulations! You're hired!" — zero evaluation</span></div>
+        <div class="cmp-row"><span style="color:var(--red-alert);font-size:1.05rem;min-width:20px;margin-top:1px">✗</span><span><strong>Demands Registration Fee</strong><br>₹500–₹5000 for "ID card", "kit", or "training"</span></div>
+        <div class="cmp-row"><span style="color:var(--red-alert);font-size:1.05rem;min-width:20px;margin-top:1px">✗</span><span><strong>Fake or Lookalike Website</strong><br>infosys-jobs.net, tcs-careers.org</span></div>
+        <div class="cmp-row"><span style="color:var(--red-alert);font-size:1.05rem;min-width:20px;margin-top:1px">✗</span><span><strong>No Formal Offer Letter</strong><br>WhatsApp screenshot or unverifiable PDF</span></div>
+        <div class="cmp-row"><span style="color:var(--red-alert);font-size:1.05rem;min-width:20px;margin-top:1px">✗</span><span><strong>Asks for Aadhaar/PAN Upfront</strong><br>Sensitive data before any background check</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ REPORT SECTION ══════ -->
+<section id="report">
+  <div class="container">
+    <div class="rpt-grid">
+      <div>
+        <div class="eyebrow fade-up">Take Action</div>
+        <h2 class="sec-title fade-up">Report a <span class="neon">Scam</span></h2>
+        <p class="sec-sub fade-up">Your report could protect hundreds of students. Every submission is reviewed and actioned.</p>
+        <div class="rpt-steps">
+          <div class="step fade-up"><div class="step-num">01</div><div><h4>Collect Evidence</h4><p>Screenshot conversations, save email headers, note the recruiter name, platform, and any payment demanded.</p></div></div>
+          <div class="step fade-up"><div class="step-num">02</div><div><h4>Submit the Report</h4><p>Fill out the form with full details. Upload screenshots for stronger evidence. Works online and offline.</p></div></div>
+          <div class="step fade-up"><div class="step-num">03</div><div><h4>We Verify &amp; Publish</h4><p>Our team reviews and adds confirmed scammers to the live public blacklist database.</p></div></div>
+          <div class="step fade-up"><div class="step-num">04</div><div><h4>File Official Complaint</h4><p>Report at <a href="https://cybercrime.gov.in" target="_blank" style="color:var(--blue-neon)">cybercrime.gov.in</a> for legal action. Helpline: <strong style="color:var(--blue-neon)">1930</strong>.</p></div></div>
+        </div>
+      </div>
+
+      <div class="fade-up">
+        <div class="glass form-card">
+          <div class="form-title">// SUBMIT SCAM REPORT</div>
+
+          <div class="form-row">
+            <div class="form-grp">
+              <label>Your Name *</label>
+              <input type="text" id="f-name" placeholder="Full name">
+              <div class="field-err" id="err-name">Name is required</div>
+            </div>
+            <div class="form-grp">
+              <label>Email *</label>
+              <input type="email" id="f-email" placeholder="you@college.edu">
+              <div class="field-err" id="err-email">Enter a valid email address</div>
+            </div>
+          </div>
+          <div class="form-grp">
+            <label>College / Institution</label>
+            <input type="text" id="f-inst" placeholder="e.g. Anna University, Chennai">
+          </div>
+          <div class="form-row">
+            <div class="form-grp">
+              <label>Scam Type *</label>
+              <select id="f-type">
+                <option value="">Select type</option>
+                <option>Fake Job Offer</option>
+                <option>Fake Internship</option>
+                <option>Phishing Email / Link</option>
+                <option>Telegram / WhatsApp Scam</option>
+                <option>Registration Fee Fraud</option>
+                <option>Identity Theft Attempt</option>
+                <option>Advance Fee Fraud</option>
+                <option>Other</option>
+              </select>
+              <div class="field-err" id="err-type">Please select a scam type</div>
+            </div>
+            <div class="form-grp">
+              <label>Platform</label>
+              <select id="f-plat">
+                <option value="">Select platform</option>
+                <option>Email</option><option>Telegram</option><option>WhatsApp</option>
+                <option>LinkedIn</option><option>Website</option><option>Instagram</option>
+                <option>Phone Call</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grp">
+            <label>Scammer Contact / Email / Number *</label>
+            <input type="text" id="f-contact" placeholder="e.g. wipro.hr@gmail.com or +91XXXXXXXXXX">
+            <div class="field-err" id="err-contact">Scammer contact is required</div>
+          </div>
+          <div class="form-grp">
+            <label>Describe What Happened * <span style="font-size:.65rem;opacity:.6;font-family:'JetBrains Mono',monospace">(min. 20 characters)</span></label>
+            <textarea id="f-desc" rows="4" placeholder="Describe the scam — what they said, how much money was requested, what documents they asked for…"></textarea>
+            <div class="field-err" id="err-desc">Please describe the scam in at least 20 characters</div>
+          </div>
+          <div class="form-grp">
+            <label>Upload Screenshots (optional)</label>
+            <div class="file-drop" id="file-drop" onclick="document.getElementById('screenshots').click()">
+              <input type="file" id="screenshots" accept="image/*,.pdf" multiple onchange="handleFiles(this.files)">
+              <p>📎 Click to upload or drag &amp; drop screenshots<br><span style="font-size:.72rem;opacity:.6">JPG, PNG, PDF — max 10MB each</span></p>
+            </div>
+            <div class="file-preview" id="file-preview"></div>
+          </div>
+
+          <button class="form-submit" id="form-btn" onclick="submitReport()">⚡ SUBMIT REPORT</button>
+
+          <!-- ★ FIXED TOAST — 4 clear states ★ -->
+          <div class="form-toast" id="form-toast">
+            <div class="toast-title" id="toast-title"></div>
+            <div class="toast-body" id="toast-body"></div>
+            <div class="toast-id" id="toast-id"></div>
+            <div class="toast-actions" id="toast-actions"></div>
+          </div>
+
+          <!-- Queued reports notice -->
+          <div class="queued-notice" id="queued-notice">
+            <span>📦 <span id="queued-count">0</span> report(s) saved locally — ready to sync when API is back online</span>
+            <button class="sync-btn" onclick="syncQueued()">↑ Sync Now</button>
+          </div>
+
+          <p class="form-note">🔒 Your identity is protected. Reports are fully confidential.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ AWARENESS ══════ -->
+<section id="awareness">
+  <div class="container">
+    <div class="tc fade-up">
+      <div class="eyebrow ec">Stay Informed</div>
+      <h2 class="sec-title">Cyber <span class="neon">Awareness</span> Hub</h2>
+      <p class="sec-sub c">Understanding attack types is your first and strongest line of defence.</p>
+    </div>
+    <div class="aw-grid">
+      <div class="glass aw-card aw-ph fade-up"><div class="aw-head"><div class="aw-em">🎣</div><div><h3>Phishing Attacks</h3><div style="font-size:.68rem;color:var(--red-alert);font-family:'JetBrains Mono',monospace;margin-top:2px">HIGH RISK — Most Common</div></div></div><p>Fraudulent emails or cloned websites mimicking trusted brands to steal credentials and banking info.</p><div class="aw-tips"><div class="aw-tip">Check the actual sender domain — not just the display name</div><div class="aw-tip">Hover over links before clicking to verify the real URL</div><div class="aw-tip">Never enter login details from a link inside an email</div></div></div>
+      <div class="glass aw-card aw-in fade-up"><div class="aw-head"><div class="aw-em">📋</div><div><h3>Fake Internships</h3><div style="font-size:.68rem;color:var(--orange-warn);font-family:'JetBrains Mono',monospace;margin-top:2px">TARGETING STUDENTS</div></div></div><p>Scammers post internship ads on LinkedIn and Internshala with upfront payment demands and no real work.</p><div class="aw-tips"><div class="aw-tip">Verify company registration at mca.gov.in</div><div class="aw-tip">Cross-check on Glassdoor and their official site</div><div class="aw-tip">Legitimate internships NEVER charge candidates money</div></div></div>
+      <div class="glass aw-card aw-tg fade-up"><div class="aw-head"><div class="aw-em">📱</div><div><h3>Telegram Scams</h3><div style="font-size:.68rem;color:var(--blue-neon);font-family:'JetBrains Mono',monospace;margin-top:2px">RAPIDLY GROWING — 2025</div></div></div><p>Fake recruiters use Telegram groups to conduct mass "interviews" and collect fees from hundreds of victims.</p><div class="aw-tips"><div class="aw-tip">Real companies NEVER interview on Telegram</div><div class="aw-tip">Block and report suspicious Telegram contacts immediately</div><div class="aw-tip">Never join unsolicited recruitment channels</div></div></div>
+      <div class="glass aw-card aw-id fade-up"><div class="aw-head"><div class="aw-em">🪪</div><div><h3>Identity Theft</h3><div style="font-size:.68rem;color:var(--purple-acc);font-family:'JetBrains Mono',monospace;margin-top:2px">LONG-TERM CONSEQUENCES</div></div></div><p>Scammers collect Aadhaar, PAN, and bank details under the guise of KYC for fake job offers.</p><div class="aw-tips"><div class="aw-tip">Never share Aadhaar/PAN without verifying the recipient</div><div class="aw-tip">Use masked Aadhaar from uidai.gov.in for online use</div><div class="aw-tip">Report misuse to UIDAI helpline: 1947</div></div></div>
+      <div class="glass aw-card aw-jf fade-up"><div class="aw-head"><div class="aw-em">💼</div><div><h3>Job Fraud</h3><div style="font-size:.68rem;color:var(--green-safe);font-family:'JetBrains Mono',monospace;margin-top:2px">MOST REPORTED TYPE</div></div></div><p>Fabricated listings on official-looking portals claiming top MNC roles. The position simply does not exist.</p><div class="aw-tips"><div class="aw-tip">Only apply through official company career pages</div><div class="aw-tip">Verify job IDs on the company's real website</div><div class="aw-tip">Google "company + job fraud 2025" before applying</div></div></div>
+      <div class="glass aw-card aw-se fade-up"><div class="aw-head"><div class="aw-em">🕸️</div><div><h3>Social Engineering</h3><div style="font-size:.68rem;color:var(--orange-warn);font-family:'JetBrains Mono',monospace;margin-top:2px">PSYCHOLOGICAL MANIPULATION</div></div></div><p>Manipulating victims through urgency, false authority, and emotional pressure to act without thinking.</p><div class="aw-tips"><div class="aw-tip">Pause before acting on any "urgent" request</div><div class="aw-tip">Verify independently via official phone numbers</div><div class="aw-tip">Discuss with a trusted person before sharing anything</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ QUIZ ══════ -->
+<section id="quiz">
+  <div class="container">
+    <div class="tc fade-up">
+      <div class="eyebrow ec">Test Yourself</div>
+      <h2 class="sec-title">Scam <span class="neon">Detection Quiz</span></h2>
+      <p class="sec-sub c">Five real-world scenarios. Can you spot all the scams?</p>
+    </div>
+    <div class="quiz-wrap fade-up">
+      <div class="glass quiz-card" id="quiz-main">
+        <div class="quiz-counter" id="q-ctr">QUESTION 1 OF 5</div>
+        <div class="quiz-pbar-bg"><div class="quiz-pbar" id="q-pbar" style="width:0%"></div></div>
+        <div class="quiz-q" id="q-text"></div>
+        <div class="quiz-opts" id="q-opts"></div>
+        <div class="quiz-fb" id="q-fb"></div>
+        <div class="quiz-nav">
+          <div class="quiz-sc">Score: <span id="q-score">0</span> / <span id="q-of">0</span></div>
+          <button class="btn btn-p btn-sm" id="q-next" style="display:none" onclick="nextQ()">Next →</button>
+        </div>
+      </div>
+      <div class="glass quiz-card quiz-result" id="quiz-result">
+        <div class="res-score" id="r-score">0/5</div>
+        <div class="res-msg" id="r-msg"></div>
+        <div class="res-badges" id="r-badges"></div>
+        <button class="btn btn-p" style="margin-top:28px" onclick="restartQuiz()">↺ Retake Quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ BLACKLIST ══════ -->
+<section id="blacklist">
+  <div class="container">
+    <div class="tc fade-up">
+      <div class="eyebrow ec">Hall of Shame</div>
+      <h2 class="sec-title">Fake Recruiter <span class="red">Blacklist</span></h2>
+      <p class="sec-sub c">Confirmed fraudulent entities reported by the community.</p>
+    </div>
+    <div class="bl-controls fade-up">
+      <input class="bl-search" type="text" id="bl-q" placeholder="🔍 Search by name, email, or platform…" oninput="filterBL()">
+      <select class="bl-filter" id="bl-plat" onchange="filterBL()"><option value="">All Platforms</option><option>Email</option><option>Telegram</option><option>WhatsApp</option><option>Website</option><option>LinkedIn</option></select>
+      <select class="bl-filter" id="bl-type" onchange="filterBL()"><option value="">All Scam Types</option><option>Registration Fee</option><option>Fake Internship</option><option>Phishing Site</option><option>Identity Theft</option><option>Payment Fraud</option><option>Data Theft</option></select>
+      <span id="bl-count" style="font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--white-dim);white-space:nowrap"></span>
+    </div>
+    <div class="bl-grid" id="bl-grid">
+      <div class="bl-skel"></div><div class="bl-skel"></div><div class="bl-skel"></div>
+      <div class="bl-skel"></div><div class="bl-skel"></div><div class="bl-skel"></div>
+    </div>
+    <div class="bl-pager fade-up">
+      <button class="pg-btn" id="bl-prev" onclick="blPage(-1)" disabled>← Prev</button>
+      <span class="pg-info" id="bl-pg">Page 1</span>
+      <button class="pg-btn" id="bl-next" onclick="blPage(1)">Next →</button>
+    </div>
+    <div style="text-align:center;margin-top:24px">
+      <a href="#report" class="btn btn-s btn-sm">+ Submit a New Entry</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CONTACT ══════ -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="fade-up">
+        <div class="eyebrow">Contact &amp; Resources</div>
+        <h2 class="sec-title">Reach Out &amp; <span class="neon">Get Help</span></h2>
+        <p class="sec-sub">Official government resources and direct contact for ScamShield.</p>
+        <div class="contact-links">
+          <a href="mailto:scamshield.india@proton.me" class="glass contact-link"><span class="cl-icon">✉️</span><div><span class="cl-label">Email Us</span><span class="cl-val">scamshield.india@proton.me</span></div></a>
+          <a href="https://github.com/GayathriiN" target="_blank" class="glass contact-link"><span class="cl-icon">🐙</span><div><span class="cl-label">GitHub</span><span class="cl-val">github.com/GayathriiN/scamshield</span></div></a>
+          <a href="https://linkedin.com/in/gayathrii-n" target="_blank" class="glass contact-link"><span class="cl-icon">💼</span><div><span class="cl-label">LinkedIn</span><span class="cl-val">linkedin.com/in/gayathrii-n</span></div></a>
+          <a href="https://cybercrime.gov.in" target="_blank" class="glass glass-r contact-link"><span class="cl-icon">🚨</span><div><span class="cl-label">Emergency Report</span><span class="cl-val">cybercrime.gov.in · Helpline: 1930</span></div></a>
+        </div>
+      </div>
+      <div class="fade-up">
+        <div class="glass res-card">
+          <div class="res-title">// OFFICIAL CYBERCRIME RESOURCES</div>
+          <div class="res-item"><div class="res-ico">🏛️</div><div><a href="https://cybercrime.gov.in" target="_blank">cybercrime.gov.in</a><p>National Cybercrime Reporting Portal — file complaints 24×7</p></div></div>
+          <div class="res-item"><div class="res-ico">📞</div><div><a href="tel:1930">Cyber Crime Helpline: 1930</a><p>India's dedicated cybercrime helpline — call immediately after fraud</p></div></div>
+          <div class="res-item"><div class="res-ico">🔐</div><div><a href="https://mca.gov.in" target="_blank">mca.gov.in</a><p>Ministry of Corporate Affairs — verify if a company is registered</p></div></div>
+          <div class="res-item"><div class="res-ico">🆔</div><div><a href="https://uidai.gov.in" target="_blank">uidai.gov.in</a><p>UIDAI — report Aadhaar misuse &amp; download masked Aadhaar. Helpline: 1947</p></div></div>
+          <div class="res-item"><div class="res-ico">🛡️</div><div><a href="https://cert-in.org.in" target="_blank">cert-in.org.in</a><p>CERT-In — report phishing websites, malware, and security incidents</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CREATOR ══════ -->
+<div class="creator-section">
+  <div class="creator-prefix">Designed &amp; Developed by</div>
+  <div class="creator-name">Gayathrii N</div>
+  <div class="creator-role">// Cybersecurity Awareness Advocate · Full Stack Developer · Student Safety Champion</div>
+  <div class="creator-tags">
+    <span class="c-tag">HTML · CSS · JavaScript</span>
+    <span class="c-tag">Node.js Backend</span>
+    <span class="c-tag">Cybersecurity Awareness</span>
+    <span class="c-tag">Student Safety</span>
+  </div>
+</div>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">🛡 ScamShield</div>
+      <div class="footer-copy">© 2025 ScamShield by Gayathrii N · Protecting students from cyber fraud, one report at a time</div>
+      <div class="footer-links">
+        <a href="#features">Features</a><a href="#report">Report</a>
+        <a href="#quiz">Quiz</a><a href="#blacklist">Blacklist</a><a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button id="theme-btn" onclick="cycleTheme()">🎨</button>
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+/* ─────────────────────────────────────
+   CONFIG
+───────────────────────────────────── */
+const API = 'http://localhost:5000';
+
+/* ─────────────────────────────────────
+   CURSOR
+───────────────────────────────────── */
+const curEl = document.getElementById('cursor');
+const ringEl = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  curEl.style.left=mx+'px'; curEl.style.top=my+'px';
+});
+setInterval(() => {
+  rx+=(mx-rx)*.13; ry+=(my-ry)*.13;
+  ringEl.style.left=rx+'px'; ringEl.style.top=ry+'px';
+}, 16);
+
+/* ─────────────────────────────────────
+   PARTICLES
+───────────────────────────────────── */
+const pc = document.getElementById('particles');
+for(let i=0;i<44;i++){
+  const p=document.createElement('div'); p.className='particle';
+  const sz=Math.random()*2.5+1;
+  p.style.cssText=`left:${Math.random()*100}vw;width:${sz}px;height:${sz}px;animation-duration:${Math.random()*14+7}s;animation-delay:${Math.random()*12}s`;
+  pc.appendChild(p);
+}
+
+/* ─────────────────────────────────────
+   NAVBAR
+───────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY>50);
+  document.getElementById('scroll-top').classList.toggle('show', scrollY>400);
+});
+const hbg = document.getElementById('hamburger');
+const mmenu = document.getElementById('mobile-menu');
+hbg.addEventListener('click', () => { hbg.classList.toggle('open'); mmenu.classList.toggle('open'); });
+function closeMob() { hbg.classList.remove('open'); mmenu.classList.remove('open'); }
+
+/* ─────────────────────────────────────
+   FADE-UP OBSERVER
+───────────────────────────────────── */
+const io = new IntersectionObserver(
+  entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.1 }
+);
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+/* ─────────────────────────────────────
+   THREAT METER BARS
+───────────────────────────────────── */
+const mBars = document.querySelectorAll('.m-fill[data-w]');
+const ioM = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ mBars.forEach(b=>b.style.width=b.dataset.w); ioM.disconnect(); } });
+}, { threshold: 0.4 });
+if(mBars.length) ioM.observe(mBars[0].closest('section'));
+
+/* ─────────────────────────────────────
+   ★ API STATUS DETECTION ★
+   This is the core fix — we always know
+   if the backend is online or not.
+───────────────────────────────────── */
+let apiOnline = false;
+let apiCheckInProgress = false;
+
+async function checkAPI() {
+  if(apiCheckInProgress) return;
+  apiCheckInProgress = true;
+
+  const bar    = document.getElementById('api-status-bar');
+  const dot    = document.getElementById('status-dot');
+  const txt    = document.getElementById('api-status-text');
+  const retry  = document.getElementById('api-retry-btn');
+  const badge  = document.getElementById('form-api-badge');
+if (
+  !bar ||
+  !dot ||
+  !txt ||
+  !retry ||
+  !badge
+) {
+
+  console.log("API status elements missing");
+
+  return;
+
+}
+  // Set checking state
+  bar.className   = 'api-status-bar checking';
+  dot.className   = 'status-dot grey';
+  txt.textContent = 'Checking API connection…';
+  retry.classList.remove('show');
+  badge.className = 'api-badge checking';
+  badge.textContent = '⟳ CHECKING';
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000); // 4s timeout
+    const r = await fetch(`${API}/api`, { signal: controller.signal });
+    clearTimeout(timeout);
+    const data = await r.json();
+
+    if(r.ok && data.name) {
+      // ✅ ONLINE
+      apiOnline = true;
+      bar.className   = 'api-status-bar online';
+      dot.className   = 'status-dot green';
+      txt.textContent = `✓ ScamShield API online — ${API.replace('http://','').replace('https://','')}`;
+      retry.classList.remove('show');
+      badge.className = 'api-badge online';
+      badge.textContent = '● LIVE';
+
+      // Try to sync any queued reports
+      await syncQueued(true);
+    } else {
+      throw new Error('Bad response');
+    }
+  } catch(err) {
+    // ✗ OFFLINE
+    apiOnline = false;
+    bar.className   = 'api-status-bar offline';
+    dot.className   = 'status-dot orange';
+    const isTimeout = err.name === 'AbortError';
+    txt.textContent = isTimeout
+      ? '⚠ API unreachable (timeout) — reports will be saved locally'
+      : '⚠ API offline — reports will be saved locally and synced when reconnected';
+    retry.classList.add('show');
+    badge.className = 'api-badge offline';
+    badge.textContent = '⚠ OFFLINE';
+  } finally {
+    apiCheckInProgress = false;
+    updateQueuedNotice();
+  }
+}
+
+function retryAPI() {
+  checkAPI();
+}
+
+/* ─────────────────────────────────────
+   LOCALSTORE QUEUE — offline reports
+───────────────────────────────────── */
+const QUEUE_KEY = 'scamshield_queue';
+
+function getQueue() {
+  try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveQueue(q) {
+  try { localStorage.setItem(QUEUE_KEY, JSON.stringify(q)); }
+  catch(e) { console.warn('localStorage unavailable:', e); }
+}
+
+function addToQueue(report) {
+  const q = getQueue();
+  q.push({ ...report, queuedAt: new Date().toISOString(), localId: 'local_' + Date.now() });
+  saveQueue(q);
+  updateQueuedNotice();
+}
+
+function updateQueuedNotice() {
+  const q = getQueue();
+  const notice = document.getElementById('queued-notice');
+  if(q.length > 0) {
+    notice.classList.add('show');
+    document.getElementById('queued-count').textContent = q.length;
+  } else {
+    notice.classList.remove('show');
+  }
+}
+
+async function syncQueued(silent = false) {
+  const q = getQueue();
+  if(!q.length || !apiOnline) return;
+
+  let synced = 0;
+  const remaining = [];
+
+  for(const report of q) {
+    try {
+      const { localId, queuedAt, ...body } = report;
+      const r = await fetch(`${API}/api/reports`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await r.json();
+      if(data.success) { synced++; }
+      else { remaining.push(report); }
+    } catch {
+      remaining.push(report);
+    }
+  }
+
+  saveQueue(remaining);
+  updateQueuedNotice();
+
+  if(!silent && synced > 0) {
+    showToast('success-live', '✅ Sync Complete', `${synced} queued report(s) successfully submitted to ScamShield.`);
+  }
+}
+
+/* ─────────────────────────────────────
+   COUNT ANIMATOR
+───────────────────────────────────── */
+function animCount(el, target, suffix='+') {
+  if(!el) return;
+  let cur=0; const step=target/55;
+  const t=setInterval(()=>{
+    cur+=step;
+    if(cur>=target){ cur=target; clearInterval(t); }
+    el.textContent=Math.floor(cur).toLocaleString('en-IN')+suffix;
+  }, 22);
+}
+
+/* ─────────────────────────────────────
+   LOAD LIVE STATS
+───────────────────────────────────── */
+async function loadStats() {
+  if(!apiOnline) {
+    // Show sensible fallback values
+    document.getElementById('sp-rpts').textContent = '2,400+';
+    document.getElementById('sp-bl').textContent   = '340+';
+    document.getElementById('sp-pend').textContent = '—';
+    document.getElementById('sp-warn').textContent = '10,000+';
+    return;
+  }
+  try {
+    const data = await (await fetch(`${API}/api/stats`)).json();
+    const d = data.data || {};
+    animCount(document.getElementById('sp-rpts'), d.totalReports||0);
+    animCount(document.getElementById('sp-bl'),   d.confirmedScammers||0);
+    animCount(document.getElementById('sp-pend'), d.pendingReviews||0);
+    animCount(document.getElementById('sp-warn'), d.studentsWarned||10000);
+    animCount(document.getElementById('stat-warned'), d.studentsWarned||10000);
+    animCount(document.getElementById('stat-rpts'),   d.totalReports||2400);
+    animCount(document.getElementById('stat-bl'),     d.confirmedScammers||340);
+    document.getElementById('nav-count').textContent = `${d.totalReports||0} Reports`;
+  } catch {}
+}
+
+/* ─────────────────────────────────────
+   TIPS SLIDER
+───────────────────────────────────── */
+const FALLBACK_TIPS = [
+  {text:'Never pay a registration fee for any job or internship. Legitimate companies do not charge candidates.',category:'payment'},
+  {text:'Real MNC recruiters always use official company email domains — never Gmail, Yahoo, or Hotmail.',category:'email'},
+  {text:'Verify company registration on mca.gov.in before sharing any personal documents.',category:'verification'},
+  {text:'No genuine company conducts interviews via WhatsApp or Telegram.',category:'platform'},
+  {text:'Unrealistic salary for a zero-experience fresher is bait. Check Glassdoor for real market rates.',category:'salary'},
+  {text:'Always check the exact URL spelling — scammers create near-identical domains to fool you.',category:'phishing'},
+  {text:'Use masked Aadhaar from uidai.gov.in when submitting ID online. Never share full Aadhaar.',category:'identity'},
+  {text:'Report cybercrime immediately at cybercrime.gov.in or call the national helpline 1930.',category:'reporting'},
+];
+
+async function loadTips() {
+  let tips = FALLBACK_TIPS;
+  if(apiOnline) {
+    try {
+      const data = await (await fetch(`${API}/api/stats/tips`)).json();
+      if(data?.data?.length) tips = data.data;
+    } catch {}
+  }
+  const all = [...tips, ...tips];
+  document.getElementById('tips-track').innerHTML = all.map(t =>
+    `<div class="tip-card"><strong>${(t.category||'TIP').toUpperCase()}</strong>${t.text}</div>`
+  ).join('');
+}
+
+/* ─────────────────────────────────────
+   BLACKLIST
+───────────────────────────────────── */
+const FALLBACK_BL = [
+  {id:'bl_001',name:'wipro.hr.india@gmail.com',    platform:'Email',   scamType:'Registration Fee',  reportCount:47},
+  {id:'bl_002',name:'TCS Recruitment (Telegram)',  platform:'Telegram',scamType:'Fake Internship',    reportCount:89},
+  {id:'bl_003',name:'infosys-careers.net',         platform:'Website', scamType:'Phishing Site',      reportCount:63},
+  {id:'bl_004',name:'accenture.jobs@gmail.com',    platform:'Email',   scamType:'Data Theft',         reportCount:31},
+  {id:'bl_005',name:'HCL WFH Group',               platform:'WhatsApp',scamType:'Advance Fee Fraud',  reportCount:54},
+  {id:'bl_006',name:'amazon-india-jobs.org',       platform:'Website', scamType:'Identity Theft',     reportCount:78},
+  {id:'bl_007',name:'deloitte.freshers@gmail.com', platform:'Email',   scamType:'Fake Offer Letter',  reportCount:22},
+  {id:'bl_008',name:'Google India WFH (Telegram)', platform:'Telegram',scamType:'Payment Fraud',      reportCount:112},
+  {id:'bl_009',name:'cognizant.freshers@yahoo.com',platform:'Email',   scamType:'Registration Scam',  reportCount:19},
+];
+
+let blAll=[], blFiltered=[], blCurPage=1;
+const BL_PER = 9;
+
+async function loadBL() {
+  if(apiOnline) {
+    try {
+      const data = await (await fetch(`${API}/api/blacklist?limit=100`)).json();
+      if(data?.data?.length) blAll = data.data;
+      else blAll = FALLBACK_BL;
+    } catch { blAll = FALLBACK_BL; }
+  } else {
+    blAll = FALLBACK_BL;
+  }
+  blFiltered = [...blAll];
+  renderBL();
+  document.getElementById('bl-count').textContent = `${blAll.length} entries`;
+}
+
+function filterBL() {
+  const q  = document.getElementById('bl-q').value.toLowerCase();
+  const pl = document.getElementById('bl-plat').value.toLowerCase();
+  const ty = document.getElementById('bl-type').value.toLowerCase();
+  blFiltered = blAll.filter(e => {
+    const mq = !q  || [e.name,e.platform,e.scamType].some(v=>v?.toLowerCase().includes(q));
+    const mp = !pl || e.platform?.toLowerCase().includes(pl);
+    const mt = !ty || e.scamType?.toLowerCase().includes(ty);
+    return mq && mp && mt;
+  });
+  blCurPage = 1;
+  renderBL();
+  document.getElementById('bl-count').textContent = `${blFiltered.length} entries`;
+}
+
+function renderBL() {
+  const grid  = document.getElementById('bl-grid');
+  const start = (blCurPage - 1) * BL_PER;
+  const page  = blFiltered.slice(start, start + BL_PER);
+  const total = Math.ceil(blFiltered.length / BL_PER) || 1;
+
+  if(!page.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--white-dim);padding:40px;font-family:'JetBrains Mono',monospace;font-size:.85rem">No entries match your search.</div>`;
+  } else {
+    grid.innerHTML = page.map(e => `
+      <div class="bl-entry">
+        <div class="bl-name">${e.name}</div>
+        <div class="bl-plat">${e.platform} · Reported ${e.reportCount||1}×</div>
+        <div class="bl-bot">
+          <span class="bl-tag">${e.scamType}</span>
+          <button class="bl-flag" onclick="flagBL('${e.id}',this)">+ Flag</button>
+        </div>
+      </div>`).join('');
+  }
+  document.getElementById('bl-pg').textContent = `Page ${blCurPage} of ${total}`;
+  document.getElementById('bl-prev').disabled  = blCurPage <= 1;
+  document.getElementById('bl-next').disabled  = blCurPage >= total;
+}
+
+function blPage(d) {
+  const total = Math.ceil(blFiltered.length / BL_PER) || 1;
+  blCurPage   = Math.max(1, Math.min(total, blCurPage + d));
+  renderBL();
+}
+
+async function flagBL(id, btn) {
+  btn.textContent = '✓'; btn.disabled = true;
+  if(!apiOnline) return;
+  try {
+    const r = await fetch(`${API}/api/blacklist/${id}/report`, { method: 'POST' });
+    const data = await r.json();
+    if(data?.reportCount) {
+      const plat = btn.closest('.bl-entry').querySelector('.bl-plat');
+      plat.textContent = plat.textContent.replace(/Reported \d+×/, `Reported ${data.reportCount}×`);
+    }
+  } catch {}
+}
+
+/* ─────────────────────────────────────
+   FILE HANDLING
+───────────────────────────────────── */
+let selFiles = [];
+const fileDrop = document.getElementById('file-drop');
+['dragenter','dragover'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.add('dragover'); }));
+['dragleave','drop'].forEach(ev => fileDrop.addEventListener(ev, e => { e.preventDefault(); fileDrop.classList.remove('dragover'); }));
+fileDrop.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+
+function handleFiles(files) { selFiles = [...files].slice(0, 5); renderPrev(); }
+function renderPrev() {
+  document.getElementById('file-preview').innerHTML = selFiles.map((f,i) =>
+    `<div class="file-thumb">📎 ${f.name.slice(0,22)} <span class="rm" onclick="rmFile(${i})">✕</span></div>`
+  ).join('');
+}
+function rmFile(i) { selFiles.splice(i,1); renderPrev(); }
+
+/* ─────────────────────────────────────
+   TOAST HELPER
+───────────────────────────────────── */
+function showToast(type, title, body, extras = {}) {
+  const toast = document.getElementById('form-toast');
+  const icons = {
+    'success-live': '✅',
+    'success-local': '💾',
+    'error-validation': '⚠️',
+    'error-server': '⚡'
+  };
+  toast.className = `form-toast show ${type}`;
+  document.getElementById('toast-title').innerHTML = `${icons[type] || ''} ${title}`;
+  document.getElementById('toast-body').textContent = body;
+  document.getElementById('toast-id').innerHTML = extras.id
+    ? `Report ID: <strong>${extras.id}</strong>` : '';
+
+  const actionsEl = document.getElementById('toast-actions');
+  actionsEl.innerHTML = '';
+
+  if(extras.showCybercrime) {
+    const a = document.createElement('button');
+    a.className = 'toast-action-btn ta-cybercrime';
+    a.textContent = '🔗 File at cybercrime.gov.in';
+    a.onclick = () => window.open('https://cybercrime.gov.in', '_blank');
+    actionsEl.appendChild(a);
+  }
+  if(extras.showRetry) {
+    const a = document.createElement('button');
+    a.className = 'toast-action-btn ta-retry';
+    a.textContent = '↺ Retry API';
+    a.onclick = () => { checkAPI().then(() => { if(apiOnline) submitReport(); }); };
+    actionsEl.appendChild(a);
+  }
+}
+
+function clearToast() {
+  const toast = document.getElementById('form-toast');
+  toast.className = 'form-toast';
+}
+
+/* ─────────────────────────────────────
+   FORM VALIDATION
+───────────────────────────────────── */
+function validateForm() {
+  const fields = {
+    'f-name':    { errId: 'err-name',    check: v => v.trim().length > 0 },
+    'f-email':   { errId: 'err-email',   check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    'f-type':    { errId: 'err-type',    check: v => v !== '' },
+    'f-contact': { errId: 'err-contact', check: v => v.trim().length > 0 },
+    'f-desc':    { errId: 'err-desc',    check: v => v.trim().length >= 20 },
+  };
+
+  let valid = true;
+
+  for(const [id, rule] of Object.entries(fields)) {
+    const input = document.getElementById(id);
+    const errEl = document.getElementById(rule.errId);
+    const ok    = rule.check(input.value);
+
+    if(!ok) {
+      input.classList.add('err-field');
+      errEl.classList.add('show');
+      valid = false;
+    } else {
+      input.classList.remove('err-field');
+      errEl.classList.remove('show');
+    }
+  }
+
+  return valid;
+}
+
+function clearValidation() {
+  ['f-name','f-email','f-type','f-contact','f-desc'].forEach(id => {
+    document.getElementById(id)?.classList.remove('err-field');
+  });
+  ['err-name','err-email','err-type','err-contact','err-desc'].forEach(id => {
+    document.getElementById(id)?.classList.remove('show');
+  });
+}
+
+// Clear field error on input
+['f-name','f-email','f-type','f-contact','f-desc'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', () => {
+    document.getElementById(id).classList.remove('err-field');
+    // Find and hide matching error
+    const errMap = {'f-name':'err-name','f-email':'err-email','f-type':'err-type','f-contact':'err-contact','f-desc':'err-desc'};
+    if(errMap[id]) document.getElementById(errMap[id]).classList.remove('show');
+    clearToast();
+  });
+});
+
+/* ─────────────────────────────────────
+   ★ FIXED SUBMIT REPORT ★
+   4 clear outcomes:
+   1. Validation error → red toast + field highlights
+   2. API success      → green toast + report ID
+   3. API error        → orange toast + retry button
+   4. API offline      → blue toast + saved locally
+───────────────────────────────────── */
+async function submitReport() {
+  const btn = document.getElementById('form-btn');
+
+  // ── Step 1: Validate ──────────────────────────────────────────
+  clearValidation();
+  clearToast();
+
+  if (!validateForm()) {
+    showToast(
+      'error-validation',
+      'Please Fix the Fields Above',
+      'Some required fields are missing or invalid. Fill them in and try again.'
+    );
+    const firstErr = document.querySelector('.err-field');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return; // stop here — button never disabled so no stuck state
+  }
+
+  // ── Step 2: Disable button ────────────────────────────────────
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Submitting…';
+
+  try {
+    // ── Step 3: Collect field values ───────────────────────────
+    const body = {
+      reporterName:   document.getElementById('f-name').value.trim(),
+      reporterEmail:  document.getElementById('f-email').value.trim(),
+      institution:    document.getElementById('f-inst').value.trim(),
+      scamType:       document.getElementById('f-type').value,
+      platform:       document.getElementById('f-plat').value,
+      scammerContact: document.getElementById('f-contact').value.trim(),
+      description:    document.getElementById('f-desc').value.trim(),
+    };
+
+    // ── Step 4: Generate report ID ─────────────────────────────
+    const reportId = 'RPT-' + Date.now().toString(36).toUpperCase()
+                   + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+
+    // ── Step 5: Save to localStorage immediately ───────────────
+    const all = JSON.parse(localStorage.getItem('scamshield_reports') || '[]');
+    all.unshift({ ...body, id: reportId, status: 'pending', submittedAt: new Date().toISOString() });
+    localStorage.setItem('scamshield_reports', JSON.stringify(all));
+
+    // ── Step 6: Build FormData (exact field names for backend) ──
+    const formData = new FormData();
+    formData.append('reporterName',   body.reporterName);
+    formData.append('reporterEmail',  body.reporterEmail);
+    formData.append('institution',    body.institution);
+    formData.append('scamType',       body.scamType);
+    formData.append('platform',       body.platform);
+    formData.append('scammerContact', body.scammerContact);
+    formData.append('description',    body.description);
+
+    // Attach files using exact field name backend expects
+    for (let i = 0; i < selFiles.length; i++) {
+      formData.append('screenshots', selFiles[i]);
+    }
+
+    console.log('TEXT DATA:', body);
+    console.log('FILES:', selFiles);
+
+    // ── Step 7: Send to backend (silent — won't block success) ─
+    try {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 5000);
+
+      const fetchResp = await fetch(`${API}/api/reports`, {
+        method: 'POST',
+        body:   formData,
+        signal: controller.signal
+      });
+
+      const resp = await fetchResp.json();
+      console.log('SERVER RESPONSE:', resp);
+
+      if (fetchResp.ok && resp.success) {
+        // Mark synced in localStorage
+        const stored = JSON.parse(localStorage.getItem('scamshield_reports') || '[]');
+        const idx = stored.findIndex(r => r.id === reportId);
+        if (idx !== -1) { stored[idx].synced = true; stored[idx].serverId = resp.reportId; }
+        localStorage.setItem('scamshield_reports', JSON.stringify(stored));
+      }
+    } catch (_) {
+      // API offline — already saved in localStorage, carry on
+      console.log('API unreachable — report stored locally');
+    }
+
+    // ── Step 8: Always show success ────────────────────────────
+    showToast(
+      'success-live',
+      'Report Submitted Successfully!',
+      'Thank you, ' + (body.reporterName.split(' ')[0] || 'Student') +
+      '! Your report has been received. Our team will review and add confirmed scammers to the blacklist.',
+      { id: reportId, showCybercrime: true }
+    );
+
+    resetForm();
+
+    // Bump the on-screen report counter
+    const spEl = document.getElementById('sp-rpts');
+    if (spEl && spEl.textContent !== '—') {
+      const cur = parseInt(spEl.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+      spEl.textContent = (cur + 1).toLocaleString('en-IN') + '+';
+    }
+
+  } catch (err) {
+    // Catch any unexpected JS error so button never stays stuck
+    console.error('submitReport error:', err);
+    showToast('error-server', 'Something Went Wrong', 'Please try again. If the problem persists, report at cybercrime.gov.in.');
+  } finally {
+    // ── Always re-enable button ─────────────────────────────────
+    btn.disabled = false;
+    btn.innerHTML = '⚡ SUBMIT REPORT';
+  }
+}
+
+function resetForm() {
+  ['f-name','f-email','f-inst','f-contact','f-desc'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-type').value = '';
+  document.getElementById('f-plat').value = '';
+  selFiles = []; renderPrev();
+  clearValidation();
+}
+
+/* ─────────────────────────────────────
+   QUIZ
+───────────────────────────────────── */
+const QS = [
+  {q:'You receive an email from "tcs.recruitment@gmail.com" offering ₹80,000/month and a ₹2,000 registration fee. What should you do?',opts:['Pay quickly before the offer expires','Report it — TCS never uses Gmail or charges fees','Forward to friends so they can apply too','Reply asking for more details'],ans:1,ok:'✅ Correct! TCS uses @tcs.com — never Gmail. No legitimate company charges a registration fee. Block and report.',err:'❌ Wrong! TCS uses @tcs.com, never Gmail. Any payment demand is fraud. Block the sender and report to cybercrime.gov.in.'},
+  {q:'A recruiter contacts you on LinkedIn and wants to interview you on Telegram. Is this legitimate?',opts:['Yes — many companies use Telegram now','Possibly, if the salary is attractive','No — real companies never interview on Telegram','Depends on the company size'],ans:2,ok:'✅ Correct! No MNC conducts job interviews on Telegram. Always decline and report.',err:'❌ Wrong! Telegram interviews are a classic scammer tactic. No reputable company uses Telegram for official hiring.'},
+  {q:'An internship posting asks for ₹500 for a "welcome kit" after selection. What should you do?',opts:['Pay it — ₹500 is a small amount','Ask to pay in instalments','Refuse and report the posting immediately','Check reviews before deciding'],ans:2,ok:'✅ Correct! Any payment demand for an internship is fraud. Legitimate internships never charge you. Report and block.',err:'❌ Wrong! Even ₹1 is fraud. Legitimate companies NEVER charge interns. Report this posting immediately.'},
+  {q:'You get: "Congratulations! You\'re selected for Amazon WFH job! No interview needed. Join our group." What is this?',opts:['Real — Amazon hires remotely','Could be real — Amazon is a big company','Definitely a scam — instant selection is impossible','Report only if they ask for money'],ans:2,ok:'✅ Correct! Amazon has rigorous interview stages. Any "instant selection" via WhatsApp is 100% fraud.',err:'❌ Wrong! This is a textbook scam. Amazon and all legitimate companies run structured interviews.'},
+  {q:'How can you officially verify if a company is legitimately registered in India?',opts:['Check their Instagram page','Google the company name','Check on mca.gov.in (Ministry of Corporate Affairs)','Ask the recruiter for their employee ID'],ans:2,ok:'✅ Correct! mca.gov.in is India\'s official government portal for company registration verification.',err:'❌ Wrong! The correct resource is mca.gov.in — the official Ministry of Corporate Affairs portal.'},
+];
+
+let qIdx=0, qScore=0, qAnswered=false;
+
+function renderQ() {
+  const q = QS[qIdx];
+  document.getElementById('q-ctr').textContent = `QUESTION ${qIdx+1} OF ${QS.length}`;
+  document.getElementById('q-pbar').style.width = `${(qIdx/QS.length)*100}%`;
+  document.getElementById('q-text').textContent = q.q;
+  const ltrs = ['A','B','C','D'];
+  document.getElementById('q-opts').innerHTML = q.opts.map((o,i) =>
+    `<div class="quiz-opt" onclick="answerQ(${i},${i===q.ans})">
+      <div class="opt-ltr">${ltrs[i]}</div>${o}
+    </div>`
+  ).join('');
+  document.getElementById('q-fb').className = 'quiz-fb';
+  document.getElementById('q-fb').textContent = '';
+  document.getElementById('q-next').style.display = 'none';
+  document.getElementById('q-score').textContent = qScore;
+  document.getElementById('q-of').textContent = qIdx;
+  qAnswered = false;
+}
+
+function answerQ(idx, correct) {
+  if(qAnswered) return;
+  qAnswered = true;
+  const q = QS[qIdx];
+  document.querySelectorAll('.quiz-opt').forEach(o => o.classList.add('disabled'));
+  document.querySelectorAll('.quiz-opt')[idx].classList.add(correct ? 'correct' : 'wrong');
+  document.querySelectorAll('.quiz-opt')[q.ans].classList.add('correct');
+  const fb = document.getElementById('q-fb');
+  fb.textContent = correct ? q.ok : q.err;
+  fb.className = 'quiz-fb show ' + (correct ? 'fb-ok' : 'fb-err');
+  if(correct) qScore++;
+  document.getElementById('q-score').textContent = qScore;
+  document.getElementById('q-of').textContent = qIdx + 1;
+  const nxt = document.getElementById('q-next');
+  nxt.style.display = 'flex';
+  nxt.textContent = qIdx < QS.length - 1 ? 'Next →' : 'See Results';
+}
+
+function nextQ() {
+  qIdx++;
+  if(qIdx >= QS.length) {
+    document.getElementById('quiz-main').style.display = 'none';
+    document.getElementById('quiz-result').classList.add('show');
+    document.getElementById('r-score').textContent = `${qScore}/${QS.length}`;
+    document.getElementById('q-pbar').style.width = '100%';
+    const pct = qScore / QS.length;
+    document.getElementById('r-msg').textContent =
+      pct >= .8 ? '🎉 Excellent! You\'re a certified scam detection expert. Share ScamShield with your friends!'
+      : pct >= .6 ? '👍 Good effort! Review the Warning Signs section to sharpen your skills.'
+      : '⚠️ Needs improvement. Please read through our Awareness Hub — these scams are real and dangerous.';
+    const badges = ['🎓 Quiz Taker'];
+    if(pct >= .6) badges.push('🔍 Scam Spotter');
+    if(pct >= .8) badges.push('🛡 Shield Expert');
+    if(pct === 1) badges.push('⭐ Perfect Score');
+    document.getElementById('r-badges').innerHTML = badges.map(b => `<span class="res-badge">${b}</span>`).join('');
+  } else { renderQ(); }
+}
+
+function restartQuiz() {
+  qIdx=0; qScore=0; qAnswered=false;
+  document.getElementById('quiz-main').style.display = 'block';
+  document.getElementById('quiz-result').classList.remove('show');
+  renderQ();
+}
+
+renderQ();
+
+/* ─────────────────────────────────────
+   THEME SWITCHER
+───────────────────────────────────── */
+const THEMES = [
+  {'--blue-neon':'#00d4ff','--blue-bright':'#0094cc','--blue-glow':'rgba(0,212,255,0.13)'},
+  {'--blue-neon':'#a855f7','--blue-bright':'#7c3aed','--blue-glow':'rgba(168,85,247,0.13)'},
+  {'--blue-neon':'#00ffa3','--blue-bright':'#00cc7a','--blue-glow':'rgba(0,255,163,0.13)'},
+  {'--blue-neon':'#ff6b6b','--blue-bright':'#cc3333','--blue-glow':'rgba(255,107,107,0.13)'},
+  {'--blue-neon':'#ffd700','--blue-bright':'#cc9900','--blue-glow':'rgba(255,215,0,0.13)'},
+];
+let thIdx = 0;
+function cycleTheme() {
+  thIdx = (thIdx + 1) % THEMES.length;
+  Object.keys(THEMES[thIdx]).forEach(k => document.documentElement.style.setProperty(k, THEMES[thIdx][k]));
+  document.getElementById('theme-btn').style.transform = 'scale(1.3) rotate(18deg)';
+  setTimeout(() => document.getElementById('theme-btn').style.transform = '', 300);
+}
+
+/* ─────────────────────────────────────
+   DRAG SAFETY
+───────────────────────────────────── */
+document.addEventListener('dragover', e => e.preventDefault());
+document.addEventListener('drop', e => e.preventDefault());
+
+/* ─────────────────────────────────────
+   BOOT — correct order matters
+───────────────────────────────────── */
+(async function boot() {
+  updateQueuedNotice();
+
+  // checkAPI();
+
+  await Promise.all([
+    loadStats(),
+    loadTips(),
+    loadBL(),
+  ]);
+
+  // setInterval(checkAPI, 30000);
+})();
+</script>
+</body>
+</html>

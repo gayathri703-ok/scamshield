@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScamShield Admin Dashboard</title>
+
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+```
+<header>
+
+  <h1>🛡 ScamShield Admin Dashboard</h1>
+
+  <button class="logout-btn" onclick="logout()">
+    Logout
+  </button>
+
+</header>
+
+<!-- Search -->
+
+<div class="search-section">
+
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search by Email, Scam Type, Platform..."
+  >
+
+</div>
+
+<!-- Filters -->
+
+<div class="filter-buttons">
+
+  <button onclick="filterReports('all')">
+    All
+  </button>
+
+  <button onclick="filterReports('pending')">
+    Pending
+  </button>
+
+  <button onclick="filterReports('verified')">
+    Verified
+  </button>
+
+  <button onclick="filterReports('resolved')">
+    Resolved
+  </button>
+
+</div>
+
+<!-- Analytics -->
+
+<div class="analytics">
+
+  <div class="card">
+    <h2 id="totalReports">0</h2>
+    <p>Total Reports</p>
+  </div>
+
+  <div class="card">
+    <h2 id="pendingReports">0</h2>
+    <p>Pending Reports</p>
+  </div>
+
+  <div class="card">
+    <h2 id="verifiedReports">0</h2>
+    <p>Verified Reports</p>
+  </div>
+
+  <div class="card">
+    <h2 id="resolvedReports">0</h2>
+    <p>Resolved Reports</p>
+  </div>
+
+</div>
+
+<!-- Reports -->
+
+<div id="reportsContainer">
+
+  <h3>Loading Reports...</h3>
+
+</div>
+```
+
+  </div>
+
+  <script src="admin.js"></script>
+
+</body>
+
+</html>
