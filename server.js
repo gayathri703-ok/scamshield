@@ -8,7 +8,8 @@ import path from "path";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { fileURLToPath } from "url";
-
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import Report from "./models/Report.js";
 import Blacklist from "./models/Blacklist.js";
 import transporter from "./config/mailer.js";
@@ -16,7 +17,19 @@ import transporter from "./config/mailer.js";
 dotenv.config();
 
 const app = express();
+app.use(helmet());
+const limiter = rateLimit({
 
+  windowMs: 15 * 60 * 1000,
+
+  max: 100,
+
+  message: {
+    success: false,
+    message: "Too many requests. Try again later."
+  }
+
+});
 app.use(cors());
 
 app.use(express.json());
@@ -268,15 +281,13 @@ app.post(
 
       let screenshots = [];
 
-      if(
-        req.files &&
-        req.files.length > 0
-      ) {
+if(req.files && req.files.length > 0){
 
-       const screenshots = req.files
-  ? req.files.map(file => file.filename)
-  : [];
-      }
+  screenshots = req.files.map(
+    file => file.filename
+  );
+
+}
 
       const report =
         await Report.create({
@@ -293,8 +304,7 @@ app.post(
 
         });
 
-        console.log("EMAIL_USER =", process.env.EMAIL_USER);
-console.log("EMAIL_PASS =", process.env.EMAIL_PASS);
+        
         try {
 
   await transporter.sendMail({
@@ -321,7 +331,41 @@ console.log("EMAIL_PASS =", process.env.EMAIL_PASS);
   });
 
   console.log("User email sent");
+await transporter.sendMail({
 
+  from: process.env.EMAIL_USER,
+
+  to: process.env.EMAIL_USER,
+
+  subject: "🚨 New Scam Report Submitted",
+
+  html: `
+
+    <h2>New Scam Report</h2>
+
+    <p><strong>Name:</strong>
+    ${reporterName}</p>
+
+    <p><strong>Email:</strong>
+    ${reporterEmail}</p>
+
+    <p><strong>Scam Type:</strong>
+    ${scamType}</p>
+
+    <p><strong>Platform:</strong>
+    ${platform}</p>
+
+    <p><strong>Scammer Contact:</strong>
+    ${scammerContact}</p>
+
+    <p><strong>Description:</strong>
+    ${description}</p>
+
+  `
+
+});
+
+console.log("Admin email sent");
 }
 
 catch(error){
@@ -505,7 +549,9 @@ app.get(
 
 );
 app.patch("/api/reports/:id", protect, async (req, res) => {
+
   try {
+
     const report = await Report.findByIdAndUpdate(
       req.params.id,
       { status: req.body.status },
@@ -519,17 +565,31 @@ app.patch("/api/reports/:id", protect, async (req, res) => {
       });
     }
 
+    if (req.body.status === "verified") {
+
+      await Blacklist.create({
+        scammerContact: report.scammerContact,
+        scamType: report.scamType,
+        platform: report.platform,
+        description: report.description
+      });
+
+    }
+
     res.json({
       success: true,
       data: report
     });
 
   } catch (error) {
+
     res.status(500).json({
       success: false,
       message: error.message
     });
+
   }
+
 });
 
 app.delete("/api/reports/:id", protect, async (req, res) => {

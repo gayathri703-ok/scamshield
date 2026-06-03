@@ -1,31 +1,35 @@
 import mongoose from "mongoose";
 
-const blacklistSchema = new mongoose.Schema({
-  contact: {
-    type: String,
-    required: true,
-    unique: true
-  },
+const blacklistSchema = new mongoose.Schema(
+  {
+    scammerContact: {
+      type: String,
+      required: true,
+    },
 
-  platform: {
-    type: String
-  },
+    scamType: {
+      type: String,
+      required: true,
+    },
 
-  scamType: {
-    type: String
-  },
+    platform: {
+      type: String,
+      required: true,
+    },
 
-  reportCount: {
-    type: Number,
-    default: 1
+    description: {
+      type: String,
+      required: true,
+    },
   },
-
-  createdAt: {
-    type: Date,
-    default: Date.now
+  {
+    timestamps: true,
   }
-});
+);
 
-const Blacklist = mongoose.model("Blacklist", blacklistSchema);
+const Blacklist = mongoose.model(
+  "Blacklist",
+  blacklistSchema
+);
 
 export default Blacklist;

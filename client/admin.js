@@ -62,23 +62,18 @@ function displayReports(reports) {
 
   reports.forEach((report) => {
 
-   const screenshotsHTML = report.screenshots
-  .map(img => {
-
-    const cleanPath =
-      img.replace(/\\/g, "/");
+  const screenshotsHTML = report.screenshots
+  .map((img) => {
+    const cleanPath = img.replace(/\\/g, "/");
 
     return `
       <img
         src="${API}/${cleanPath}"
         alt="screenshot"
-        class="report-image"
       >
     `;
-
   })
   .join("");
-
     const card = document.createElement("div");
 
     card.className = "report-card";
