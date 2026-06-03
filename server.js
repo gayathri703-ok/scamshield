@@ -17,7 +17,11 @@ import transporter from "./config/mailer.js";
 dotenv.config();
 
 const app = express();
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
+);
 const limiter = rateLimit({
 
   windowMs: 15 * 60 * 1000,
@@ -161,7 +165,8 @@ app.post(
   "/api/admin/login",
 
   async (req, res) => {
-
+console.log("LOGIN REQUEST:");
+console.log(req.body);
     try {
 
       const {
