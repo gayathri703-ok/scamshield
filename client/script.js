@@ -1,7 +1,6 @@
 // script.js
 
-const API = "http://localhost:5000";
-
+const API = "https://scamshield-7cve.onrender.com";
 // ============================
 // SELECT ELEMENTS
 // ============================

@@ -1,6 +1,6 @@
 // admin.js
 
-const API = "http://localhost:5000";
+const API = "https://scamshield-7cve.onrender.com";
 
 const token = localStorage.getItem("token");
 
@@ -62,13 +62,34 @@ function displayReports(reports) {
 
   reports.forEach((report) => {
 
-  const screenshotsHTML = report.screenshots
-  .map((img) => {
-    const cleanPath = img.replace(/\\/g, "/");
+ const screenshotsHTML = report.screenshots
+  .map((file) => {
+
+    if (
+      file.toLowerCase().endsWith(".pdf")
+    ) {
+
+      return `
+        <a
+          href="${API}/uploads/${file}"
+          target="_blank"
+          style="
+            display:block;
+            padding:10px;
+            background:#f0f0f0;
+            border-radius:8px;
+            text-decoration:none;
+            margin-bottom:10px;
+          "
+        >
+          📄 View PDF
+        </a>
+      `;
+    }
 
     return `
       <img
-        src="${API}/${cleanPath}"
+        src="${API}/uploads/${file}"
         alt="screenshot"
       >
     `;
