@@ -1,4 +1,4 @@
-const API = "http://localhost:5000";
+const API = "https://scamshield-7cve.onrender.com";
 
 const loginForm =
   document.getElementById("loginForm");
@@ -6,7 +6,7 @@ const loginForm =
 const message =
   document.getElementById("message");
 
-loginForm.addEventListener("submit", async (e)=>{
+loginForm.addEventListener("submit", async (e) => {
 
   e.preventDefault();
 
@@ -16,45 +16,50 @@ loginForm.addEventListener("submit", async (e)=>{
   const password =
     document.getElementById("password").value;
 
-  try{
+  try {
 
     const response = await fetch(
       `${API}/api/admin/login`,
       {
-        method:"POST",
+        method: "POST",
 
-        headers:{
-          "Content-Type":"application/json",
+        headers: {
+          "Content-Type": "application/json"
         },
 
-        body:JSON.stringify({
+        body: JSON.stringify({
           email,
-          password,
-        }),
+          password
+        })
       }
     );
 
     const data = await response.json();
 
-    if(data.success){
+    if (data.success) {
 
       localStorage.setItem(
         "token",
         data.token
       );
 
-      window.location.href = "admin.html";
+      window.location.href =
+        "admin.html";
 
     } else {
 
-      message.innerText = data.message;
+      message.innerText =
+        data.message;
+
     }
 
-  } catch(error){
-
-    message.innerText = "Server Error";
+  } catch (error) {
 
     console.log(error);
+
+    message.innerText =
+      "Server Error";
+
   }
 
 });
