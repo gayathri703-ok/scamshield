@@ -1,6 +1,6 @@
 // admin.js
 
-const API = "https://scamshield-7cve.onrender.com";
+const API_URL = "http://localhost:5000";
 
 const token = localStorage.getItem("token");
 
@@ -24,7 +24,7 @@ async function fetchReports() {
 
   try {
 
-    const response = await fetch(`${API}/api/reports`, {
+    const response = await fetch(`${API_URL}/api/reports`, {
       headers: {
         authorization: token,
       },
@@ -32,12 +32,18 @@ async function fetchReports() {
 
     const data = await response.json();
 
-    allReports = data.data;
+console.log("REPORT RESPONSE:", data);
 
-    displayReports(allReports);
+if (!data.success) {
+  console.log("API ERROR:", data.message);
+  return;
+}
 
-    updateAnalytics(allReports);
+allReports = data.data || [];
 
+displayReports(allReports);
+
+updateAnalytics(allReports);
   } catch (error) {
     console.log(error);
   }
@@ -47,7 +53,7 @@ async function fetchReports() {
 // DISPLAY REPORTS
 // ============================
 
-function displayReports(reports) {
+function displayReports(reports = []) {
 
   reportsContainer.innerHTML = "";
 
@@ -61,26 +67,21 @@ function displayReports(reports) {
   }
 
   reports.forEach((report) => {
-
- const screenshotsHTML = report.screenshots
+console.log("SCREENSHOTS:", report.screenshots);
+const screenshotsHTML = (report.screenshots || [])
   .map((file) => {
 
-    if (
-      file.toLowerCase().endsWith(".pdf")
-    ) {
+    const cleanFile = file.replace(/\\/g, "/");
 
+    const fileUrl = cleanFile.startsWith("uploads/")
+      ? `${API_URL}/${cleanFile}`
+      : `${API_URL}/uploads/${cleanFile}`;
+
+    if (cleanFile.toLowerCase().endsWith(".pdf")) {
       return `
         <a
-          href="${API}/uploads/${file}"
+          href="${fileUrl}"
           target="_blank"
-          style="
-            display:block;
-            padding:10px;
-            background:#f0f0f0;
-            border-radius:8px;
-            text-decoration:none;
-            margin-bottom:10px;
-          "
         >
           📄 View PDF
         </a>
@@ -89,13 +90,17 @@ function displayReports(reports) {
 
     return `
       <img
-        src="${API}/uploads/${file}"
+        src="${fileUrl}"
         alt="screenshot"
+        style="max-width:300px;"
       >
     `;
   })
   .join("");
-    const card = document.createElement("div");
+  
+const card = document.createElement("div");
+
+card.className = "report-card";
 
     card.className = "report-card";
 
@@ -188,7 +193,7 @@ async function updateStatus(id, status) {
 
   try {
 
-    await fetch(`${API}/api/reports/${id}`, {
+    await fetch(`${API_URL}/api/reports/${id}`, {
 
       method:"PATCH",
 
@@ -221,7 +226,7 @@ async function deleteReport(id){
 
   try{
 
-    await fetch(`${API}/api/reports/${id}`,{
+    await fetch(`${API_URL}/api/reports/${id}`,{
 
       method:"DELETE",
 
