@@ -1,220 +1,107 @@
-// script.js
+const API_URL = "http://localhost:5000";
 
-const API = "https://scamshield-7cve.onrender.com";
-// ============================
-// SELECT ELEMENTS
-// ============================
+async function submitReport() {
 
-const reportForm =
-  document.getElementById("reportForm");
-
-const message =
-  document.getElementById("message");
-
-// ============================
-// FORM SUBMIT
-// ============================
-
-reportForm.addEventListener(
-  "submit",
-  async (e) => {
-
-    e.preventDefault();
-
-    // ============================
-    // CREATE FORMDATA
-    // ============================
+  try {
 
     const formData = new FormData();
 
-    // ============================
-    // GET INPUT VALUES
-    // ============================
-
-    const reporterName =
-      document.getElementById(
-        "reporterName"
-      ).value;
-
-    const reporterEmail =
-      document.getElementById(
-        "reporterEmail"
-      ).value;
-
-    const institution =
-      document.getElementById(
-        "institution"
-      ).value;
-
-    const scamType =
-      document.getElementById(
-        "scamType"
-      ).value;
-
-    const platform =
-      document.getElementById(
-        "platform"
-      ).value;
-
-    const scammerContact =
-      document.getElementById(
-        "scammerContact"
-      ).value;
-
-    const description =
-      document.getElementById(
-        "description"
-      ).value;
-
-    // ============================
-    // APPEND TEXT DATA
-    // ============================
-
     formData.append(
       "reporterName",
-      reporterName
+      document.getElementById("f-name")?.value || ""
     );
 
     formData.append(
       "reporterEmail",
-      reporterEmail
+      document.getElementById("f-email")?.value || ""
     );
 
     formData.append(
       "institution",
-      institution
-    );
-
-    formData.append(
-      "scamType",
-      scamType
-    );
-
-    formData.append(
-      "platform",
-      platform
+      document.getElementById("f-inst")?.value || ""
     );
 
     formData.append(
       "scammerContact",
-      scammerContact
+      document.getElementById("f-contact")?.value || ""
     );
 
     formData.append(
       "description",
-      description
+      document.getElementById("f-desc")?.value || ""
     );
 
-    // ============================
-    // FILE UPLOAD
-    // ============================
+    const screenshots =
+      document.getElementById("screenshots");
 
-    const screenshotInput =
-      document.getElementById(
-        "screenshots"
-      );
+    if (screenshots?.files) {
 
-    const files =
-      screenshotInput.files;
-
-    // APPEND ALL FILES
-
-    for (
-      let i = 0;
-      i < files.length;
-      i++
-    ) {
-
-      formData.append(
-        "screenshots",
-        files[i]
-      );
-
-    }
-
-    // ============================
-    // DEBUG LOG
-    // ============================
-
-    for (
-      let pair of formData.entries()
-    ) {
-
-      console.log(
-        pair[0],
-        pair[1]
-      );
-
-    }
-
-    // ============================
-    // SEND TO BACKEND
-    // ============================
-
-    try {
-
-      const response =
-        await fetch(
-
-          `${API}/api/reports`,
-
-          {
-            method: "POST",
-            body: formData,
-          }
-
-        );
-
-      const data =
-        await response.json();
-
-      // ============================
-      // SUCCESS
-      // ============================
-
-      if (data.success) {
-
-        message.style.color =
-          "green";
-
-        message.innerText =
-          "Report submitted successfully";
-
-        reportForm.reset();
-
-      }
-
-      // ============================
-      // ERROR FROM BACKEND
-      // ============================
-
-      else {
-
-        message.style.color =
-          "red";
-
-        message.innerText =
-          data.message;
-
+      for (const file of screenshots.files) {
+        formData.append("screenshots", file);
       }
 
     }
 
-    // ============================
-    // SERVER ERROR
-    // ============================
+    const response = await fetch(
+      `${API_URL}/api/reports`,
+      {
+        method: "POST",
+        body: formData
+      }
+    );
 
-    catch (error) {
+    const data = await response.json();
 
-      console.log(error);
+    console.log(data);
 
-      message.style.color =
-        "red";
+    alert(
+      data.success
+        ? "Report submitted successfully"
+        : data.message
+    );
 
-      message.innerText =
-        "Server Error";
+  } catch (err) {
 
-    }
+    console.error(err);
+    alert("Server Error");
 
   }
-);
+
+}
+initAnimations();
+
+loadWarnings();
+
+setupForm();
+
+async function loadStats() {
+
+  try {
+
+    const response =
+      await fetch(
+        "http://localhost:5000/api/stats"
+      );
+
+    const data =
+      await response.json();
+
+    document.getElementById(
+      "totalReports"
+    ).innerText = data.reports;
+
+    document.getElementById(
+      "totalBlacklist"
+    ).innerText = data.blacklist;
+
+  }
+
+  catch(error) {
+
+    console.log(error);
+
+  }
+
+}
+
+loadStats();

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ScamShield Admin Dashboard</title>
+
+<link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body>
+
+<h1>🛡 ScamShield Admin Dashboard</h1>
+
+<div class="stats">
+
+<div class="card">
+<p>Total Reports</p>
+<h2 id="totalReports">0</h2>
+</div>
+
+<div class="card">
+<p>Blacklist Entries</p>
+<h2 id="totalBlacklist">0</h2>
+</div>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Name</th>
+
+<th>Scam Type</th>
+
+<th>Platform</th>
+
+<th>Status</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="reportsTable">
+
+<tr>
+
+<td colspan="5">
+Loading reports...
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+
+</html>

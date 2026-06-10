@@ -449,7 +449,7 @@ footer{background:var(--navy-deep);padding:36px 0;border-top:1px solid var(--gla
     <li><a href="#warnings">Warnings</a></li>
     <li><a href="#comparison">Compare</a></li>
     <li><a href="#report">Report</a></li>
-    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
     <li><a href="#blacklist">Blacklist</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -534,7 +534,37 @@ footer{background:var(--navy-deep);padding:36px 0;border-top:1px solid var(--gla
     </div>
   </div>
 </section>
+<section id="stats">
 
+  <div class="container">
+
+    <h2 class="section-title">
+      ScamShield Impact
+    </h2>
+
+    <div class="stats-container">
+
+      <div class="stat-card">
+
+        <h3 id="totalReports">0</h3>
+
+        <p>Reports Submitted</p>
+
+      </div>
+
+      <div class="stat-card">
+
+        <h3 id="totalBlacklist">0</h3>
+
+        <p>Verified Scammers</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 <!-- ══════ LIVE STATS BAR ══════ -->
 <div id="live-stats-bar">
   <div class="container">
@@ -887,10 +917,7 @@ footer{background:var(--navy-deep);padding:36px 0;border-top:1px solid var(--gla
 /* ─────────────────────────────────────
    CONFIG
 ───────────────────────────────────── */
-
-const API = "https://scamshield-7cve.onrender.com";
-</script>
-
+const API_URL = "http://localhost:5000";
 /* ─────────────────────────────────────
    CURSOR
 ───────────────────────────────────── */
@@ -964,32 +991,30 @@ async function checkAPI() {
   const txt    = document.getElementById('api-status-text');
   const retry  = document.getElementById('api-retry-btn');
   const badge  = document.getElementById('form-api-badge');
-if (
-  !bar ||
-  !dot ||
-  !txt ||
-  !retry ||
-  !badge
-) {
-
-  console.log("API status elements missing");
-
-  return;
-
-}
+console.log({
+  bar,
+  dot,
+  txt,
+  retry,
+  badge
+});
   // Set checking state
-  bar.className   = 'api-status-bar checking';
-  dot.className   = 'status-dot grey';
-  txt.textContent = 'Checking API connection…';
-  retry.classList.remove('show');
+ if (bar)   bar.className = 'api-status-bar checking';
+if (dot)   dot.className = 'status-dot grey';
+if (txt)   txt.textContent = 'Checking API connection…';
+if (retry) retry.classList.remove('show');
+
+if (badge) {
   badge.className = 'api-badge checking';
   badge.textContent = '⟳ CHECKING';
+}
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 4000); // 4s timeout
-    const r = await fetch(`${API}/api`, { signal: controller.signal });
+    const r = await fetch(`${API_URL}/api`, { signal: controller.signal });
     clearTimeout(timeout);
+
     const data = await r.json();
 
     if(r.ok && data.name) {
@@ -997,17 +1022,20 @@ if (
       apiOnline = true;
       bar.className   = 'api-status-bar online';
       dot.className   = 'status-dot green';
-      txt.textContent = `✓ ScamShield API online — ${API.replace('http://','').replace('https://','')}`;
+     txt.textContent =
+  `✓ ScamShield API online — ${API_URL.replace('http://','').replace('https://','')}`;
       retry.classList.remove('show');
-      badge.className = 'api-badge online';
-      badge.textContent = '● LIVE';
-
+     if (badge) {
+  badge.className = 'api-badge online';
+  badge.textContent = '● LIVE';
+}
       // Try to sync any queued reports
       await syncQueued(true);
     } else {
       throw new Error('Bad response');
     }
-  } catch(err) {
+  }catch (err) {
+  console.error("FULL CHECKAPI ERROR:", err);
     // ✗ OFFLINE
     apiOnline = false;
     bar.className   = 'api-status-bar offline';
@@ -1017,8 +1045,10 @@ if (
       ? '⚠ API unreachable (timeout) — reports will be saved locally'
       : '⚠ API offline — reports will be saved locally and synced when reconnected';
     retry.classList.add('show');
-    badge.className = 'api-badge offline';
-    badge.textContent = '⚠ OFFLINE';
+   if (badge) {
+  badge.className = 'api-badge offline';
+  badge.textContent = '● OFFLINE';
+}
   } finally {
     apiCheckInProgress = false;
     updateQueuedNotice();
@@ -1072,7 +1102,7 @@ async function syncQueued(silent = false) {
   for(const report of q) {
     try {
       const { localId, queuedAt, ...body } = report;
-      const r = await fetch(`${API}/api/reports`, {
+      const r = await fetch(`${API_URL}/api/reports`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
@@ -1119,8 +1149,9 @@ async function loadStats() {
     return;
   }
   try {
-    const data = await (await fetch(`${API}/api/stats`)).json();
+    const data = await (await fetch(`${API_URL}/api/stats`)).json();
     const d = data.data || {};
+
     animCount(document.getElementById('sp-rpts'), d.totalReports||0);
     animCount(document.getElementById('sp-bl'),   d.confirmedScammers||0);
     animCount(document.getElementById('sp-pend'), d.pendingReviews||0);
@@ -1150,7 +1181,7 @@ async function loadTips() {
   let tips = FALLBACK_TIPS;
   if(apiOnline) {
     try {
-      const data = await (await fetch(`${API}/api/stats/tips`)).json();
+      const data = await (await fetch(`${API_URL}/api/stats/tips`)).json();
       if(data?.data?.length) tips = data.data;
     } catch {}
   }
@@ -1181,7 +1212,7 @@ const BL_PER = 9;
 async function loadBL() {
   if(apiOnline) {
     try {
-      const data = await (await fetch(`${API}/api/blacklist?limit=100`)).json();
+      const data = await (await fetch(`${API_URL}/api/blacklist?limit=100`)).json();
       if(data?.data?.length) blAll = data.data;
       else blAll = FALLBACK_BL;
     } catch { blAll = FALLBACK_BL; }
@@ -1242,7 +1273,7 @@ async function flagBL(id, btn) {
   btn.textContent = '✓'; btn.disabled = true;
   if(!apiOnline) return;
   try {
-    const r = await fetch(`${API}/api/blacklist/${id}/report`, { method: 'POST' });
+    const r = await fetch(`${API_URL}/api/blacklist/${id}/report`, { method: 'POST' });
     const data = await r.json();
     if(data?.reportCount) {
       const plat = btn.closest('.bl-entry').querySelector('.bl-plat');
@@ -1435,7 +1466,7 @@ async function submitReport() {
       const controller = new AbortController();
       setTimeout(() => controller.abort(), 5000);
 
-      const fetchResp = await fetch(`${API}/api/reports`, {
+      const fetchResp = await fetch(`${API_URL}/api/reports`, {
         method: 'POST',
         body:   formData,
         signal: controller.signal
@@ -1602,17 +1633,17 @@ document.addEventListener('drop', e => e.preventDefault());
    BOOT — correct order matters
 ───────────────────────────────────── */
 (async function boot() {
-  updateQueuedNotice();
-
-  // checkAPI();
-
+  updateQueuedNotice();        // show any previously queued reports
+  // Run API check in background — don't block page render or button
+  checkAPI();
+  // Load all data immediately with fallbacks
   await Promise.all([
     loadStats(),
     loadTips(),
     loadBL(),
   ]);
-
-  // setInterval(checkAPI, 30000);
+  // Re-check API every 30 seconds
+  setInterval(checkAPI, 30000);
 })();
 </script>
 </body>

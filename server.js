@@ -451,20 +451,24 @@ app.get(
 
 app.get(
 
-  "/api/blacklist",
+  "/api/reports/verified",
 
   async (req, res) => {
 
     try {
 
-      const blacklist =
-        await Blacklist.find()
-          .sort({ createdAt: -1 });
+      const reports =
+        await Report.find({
+          status: "verified"
+        }).sort({
+          createdAt: -1
+        });
 
       res.status(200).json({
 
         success: true,
-        data: blacklist
+        count: reports.length,
+        data: reports
 
       });
 
@@ -484,7 +488,6 @@ app.get(
   }
 
 );
-
 app.get(
 
   "/api/stats",
@@ -624,7 +627,42 @@ app.delete("/api/reports/:id", protect, async (req, res) => {
 });
 const PORT =
   process.env.PORT || 5000;
+app.get(
 
+  "/api/blacklist",
+
+  async (req, res) => {
+
+    try {
+
+      const blacklist =
+        await Blacklist.find()
+        .sort({ createdAt: -1 });
+
+      res.status(200).json({
+
+        success: true,
+        count: blacklist.length,
+        data: blacklist
+
+      });
+
+    }
+
+    catch(error) {
+
+      res.status(500).json({
+
+        success: false,
+        message: error.message
+
+      });
+
+    }
+
+  }
+
+);
 app.listen(PORT, () => {
 
   console.log(

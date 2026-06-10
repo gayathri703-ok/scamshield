@@ -1,65 +1,80 @@
-const API = "https://scamshield-7cve.onrender.com";
+// login.js
 
-const loginForm =
-  document.getElementById("loginForm");
+const API_URL = "http://localhost:5000";
 
-const message =
-  document.getElementById("message");
+const form = document.getElementById("loginForm");
+const message = document.getElementById("message");
 
-loginForm.addEventListener("submit", async (e) => {
+if (!form) {
+  console.error("loginForm not found");
+} else {
 
-  e.preventDefault();
+  form.addEventListener("submit", async (e) => {
 
-  const email =
-    document.getElementById("email").value;
+    e.preventDefault();
 
-  const password =
-    document.getElementById("password").value;
+    const email =
+      document.getElementById("email").value;
 
-  try {
+    const password =
+      document.getElementById("password").value;
 
-    const response = await fetch(
-      `${API}/api/admin/login`,
-      {
-        method: "POST",
+    try {
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+      const response = await fetch(
+        `${API_URL}/api/admin/login`,
+        {
+          method: "POST",
 
-        body: JSON.stringify({
-          email,
-          password
-        })
-      }
-    );
+          headers: {
+            "Content-Type": "application/json"
+          },
 
-    const data = await response.json();
-
-    if (data.success) {
-
-      localStorage.setItem(
-        "token",
-        data.token
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
       );
 
-      window.location.href =
-        "admin.html";
+      const data = await response.json();
 
-    } else {
+      console.log("LOGIN RESPONSE:", data);
 
-      message.innerText =
-        data.message;
+      if (data.success) {
+
+        localStorage.setItem(
+          "token",
+          data.token
+        );
+
+        message.style.color = "green";
+        message.textContent =
+          "Login successful";
+
+        setTimeout(() => {
+          window.location.href =
+            "admin.html";
+        }, 1000);
+
+      } else {
+
+        message.style.color = "red";
+        message.textContent =
+          data.message || "Login failed";
+
+      }
+
+    } catch (error) {
+
+      console.error("LOGIN ERROR:", error);
+
+      message.style.color = "red";
+      message.textContent =
+        "Server Error";
 
     }
 
-  } catch (error) {
+  });
 
-    console.log(error);
-
-    message.innerText =
-      "Server Error";
-
-  }
-
-});
+}

@@ -1,19 +1,18 @@
-# ScamShield
+# 🛡 ScamShield
 
-ScamShield is a Full Stack Scam Reporting Platform that helps users report online scams and allows administrators to investigate and verify reports.
+ScamShield is a Full Stack Cyber Scam Reporting Platform designed to help students and job seekers identify and report fake job offers, internship scams, phishing attacks, and recruitment fraud.
 
 ## Features
 
-* Scam Report Submission
-* Screenshot Upload Support
+* Scam Reporting System
+* Screenshot Evidence Upload
+* Email Notifications
 * Admin Dashboard
-* Search and Filter Reports
-* JWT Authentication
-* Dynamic Blacklist System
-* User Email Notifications
-* Admin Email Notifications
-* Helmet Security
-* Rate Limiting
+* Report Verification System
+* Public Scam Blacklist
+* Scam Detection Quiz
+* Mobile Responsive Design
+* MongoDB Database Storage
 
 ## Tech Stack
 
@@ -32,20 +31,64 @@ ScamShield is a Full Stack Scam Reporting Platform that helps users report onlin
 
 * MongoDB Atlas
 
-### Other Tools
+### Additional Tools
 
-* JWT
-* Multer
+* JWT Authentication
 * Nodemailer
-* Helmet
-* Express Rate Limit
+* Multer
+* Render
+
+## Project Workflow
+
+1. User submits scam report.
+2. Report is stored in MongoDB.
+3. Confirmation email is sent.
+4. Admin reviews report.
+5. Verified reports are added to public blacklist.
+6. Users can search blacklist and learn scam awareness through quiz.
 
 ## Installation
 
+```bash
 npm install
-
 npm start
+```
+
+## Screenshots
+
+### Homepage
+![Homepage](screenshorts/homepage.png)
+
+### Admin Dashboard
+![Admin Dashboard](screenshorts/admin-dashboard.png)
+
+### API Blacklist
+![API Blacklist](screenshorts/api-blacklist.png)
+
+### Blacklist Page
+![Blacklist Page](screenshorts/blacklist-page.png)
+
+### Dashboard Page
+![Dashboard Page](screenshorts/dashboard-page.png)
+
+### Mobile View
+![Mobile View](screenshorts/mobile-view.png)
+
+### Quiz Page
+![Quiz Page](screenshorts/quiz-page.png)
+
+### Report Page
+![Report Page](screenshorts/report-page.png)
+
+### Verified Reports
+![Verified Reports](screenshorts/verified-reports.png)
+
+## Live Demo
+
+Coming Soon
 
 ## Author
 
 Gayathri N
+```
+

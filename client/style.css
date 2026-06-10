@@ -470,7 +470,12 @@ h1, h2, h3, h4 {
 .fade-up {
   opacity: 0;
   transform: translateY(36px);
-  transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .fade-up.visible { opacity: 1; transform: translateY(0); }
@@ -751,7 +756,44 @@ h1, h2, h3, h4 {
   padding-top: 80px;
   overflow: hidden;
 }
+@media (max-width:768px){
 
+  .upload-area{
+    width:100%;
+    padding:20px;
+    box-sizing:border-box;
+  }
+
+
+
+  .stats-container{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+
+ .actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .actions button{
+    width:100%;
+  }
+
+
+  .hero h1{
+    font-size:2rem;
+    text-align:center;
+  }
+
+  .hero p{
+    text-align:center;
+    font-size:1rem;
+  }
+
+}
 .hero__bg {
   position: absolute;
   inset: 0;
@@ -846,7 +888,10 @@ h1, h2, h3, h4 {
   filter: drop-shadow(0 0 32px rgba(0, 212, 255, 0.4));
   animation: float-shield 4.2s ease-in-out infinite;
 }
-
+img{
+  max-width:100%;
+  height:auto;
+}
 @keyframes float-shield {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%       { transform: translateY(-16px) rotate(0.5deg); }
@@ -922,7 +967,55 @@ h1, h2, h3, h4 {
   gap: 22px;
   margin-top: 56px;
 }
+@media (max-width: 768px) {
 
+  .navbar{
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-links{
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero{
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-content h1{
+    font-size: 2.5rem;
+  }
+
+  .hero-image{
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .features-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .compare-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .report-container{
+    width: 100%;
+  }
+
+  .blacklist-grid{
+    grid-template-columns: 1fr;
+  }
+
+
+  .features-grid{
+    grid-template-columns:1fr;
+  }
+
+}
 .feat-card { padding: 34px 28px; }
 
 .feat-card__icon {
@@ -1636,7 +1729,42 @@ input[type=file] { display: none; }
   padding: 36px 0;
   border-top: 1px solid var(--glass-border);
 }
+.footer{
+  padding:20px;
+}
 
+.contact-form{
+  width:100%;
+}
+
+/* ADD BELOW THIS */
+
+#stats{
+  padding:80px 20px;
+  text-align:center;
+}
+
+.stats-container{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+  margin-top:30px;
+}
+
+.stat-card{
+  background:#13233d;
+  padding:30px;
+  border-radius:15px;
+  min-width:250px;
+  box-shadow:0 0 15px rgba(0,212,255,.2);
+}
+
+.stat-card h3{
+  font-size:42px;
+  color:#00d4ff;
+  margin-bottom:10px;
+}
 .footer__inner {
   display: flex;
   align-items: center;
@@ -1650,7 +1778,21 @@ input[type=file] { display: none; }
 .footer__links { display: flex; gap: 22px; }
 .footer__links a { color: var(--white-dim); font-size: 0.76rem; transition: color 0.2s; }
 .footer__links a:hover { color: var(--blue-neon); }
+@media (max-width:768px){
 
+  form{
+    width:100%;
+  }
+
+  input,
+  select,
+  textarea,
+  button{
+    width:100%;
+    box-sizing:border-box;
+  }
+
+}
 /* ────────────────────────────────────────
    30. FLOATING ACTION BUTTONS
 ──────────────────────────────────────── */
@@ -1724,7 +1866,22 @@ input[type=file] { display: none; }
 
   .compare-grid { grid-template-columns: 1fr; }
 }
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
 
+@media (max-width: 768px) {
+
+  .container{
+    width:100%;
+    padding:15px;
+  }
+
+  section{
+    padding:40px 15px;
+  }
+
+}
 /* ────────────────────────────────────────
    33. PRINT STYLES
 ──────────────────────────────────────── */
