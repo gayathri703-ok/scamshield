@@ -85,7 +85,7 @@ npm start
 
 ## Live Demo
 
-Coming Soon
+[Click Here to visit scamshield](https://scamshield-7cve.onrender.com)
 
 ## Author
 
